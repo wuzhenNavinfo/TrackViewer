@@ -9,6 +9,7 @@ var index = require('./routes/index');
 var users = require('./routes/users');
 var test = require('./routes/test');
 var photo = require('./routes/photo');
+var searchNode = require('./routes/searchNode');
 var debug = require('debug')('myapp:server');
 var http = require('http');
 
@@ -26,6 +27,7 @@ app.use('/', index);
 app.use('/users', users);
 app.use('/test', test);
 app.use('/photo', photo);
+app.use('/searchNode', searchNode);
 app.use(express.static(path.join(__dirname, 'public')));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
