@@ -1,4 +1,4 @@
-const wktParser = require('terraformer-wkt-parser');
+import wktParser from 'terraformer-wkt-parser';
 
 class MercatorProjection {
     constructor() {

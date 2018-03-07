@@ -1,9 +1,0 @@
-extends layout
-
-block content
-  h1 全部点
-  - var list = infoList
-  each point in list
-      li
-        //- a(href='/234') #{point.id}
-        a(href="/photo/photo?id=" + point.id) #{point.id} ---------- #{point.geometry.coordinates}

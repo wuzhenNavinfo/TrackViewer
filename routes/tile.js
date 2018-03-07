@@ -1,14 +1,11 @@
-import SearchNode from '../server/controller/searchNode.js';
-var express = require('express');
+import Node from '../server/controller/node.js';
+import express from 'express';
 var router = express.Router();
-require('spatialite');
 
-/* GET test listing. */
-router.get('/searchNode', function(req, res, next) {
-    // res.send('respond with a resource');
+router.get('/node', function(req, res, next) {
     console.info('----', JSON.parse(req.query.parameter));
     try {
-        let test = new SearchNode(req, res, next);
+        let test = new Node(req, res, next);
         let parm = JSON.parse(req.query.parameter);
         let x = parm.x;
         let y = parm.y;
@@ -21,4 +18,4 @@ router.get('/searchNode', function(req, res, next) {
     }
 });
 
-module.exports = router;
+export default router;

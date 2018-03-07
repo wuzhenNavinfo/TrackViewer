@@ -1,4 +1,5 @@
-var sqlite = require('spatialite').verbose();
+import sqlite from 'spatialite';
+
 class NewSqlite {
     constructor() {
         this.fileUrl = __dirname + '../../playback-img.sqlite';
