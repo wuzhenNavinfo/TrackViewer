@@ -1,6 +1,5 @@
 import NewSqlite from './../sqliteConnect.js';
 import MercatorProjection from '../utils/MercatorProjection.js';
-var fs = require("fs")
 
 class SearchNode {
     constructor(req, res, next) {
@@ -21,7 +20,7 @@ class SearchNode {
         sql = `select AsGeoJSON(geometry) AS geometry from track_collection LIMIT 1`;
 
         sql = 'select id, linkId, AsWKT(a.geometry) AS geometry from track_collection a where  PtDistWithin(a.geometry, GeomFromText("' + wkt + '"), 1)';
-        console.info('==========', sql);
+        // console.info('==========', sql);
 
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
@@ -33,19 +32,16 @@ class SearchNode {
                     if (rows[i].geometry) {
                         let snapShot = {
                             g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
-                            // t: 16,
-                            i: rows[i].i,
+                            i: rows[i].id,
                             m: {}
                         };
                         snapShot.m.a = rows[i].linkId;
                         dataArray.push(snapShot);
                     }
                 }
-
                 self.res.json({ errorCode: 0, data: dataArray });
             });
         });
-        // this.res.json({ errorCode: 0, data: sql });
     }
 }
 
