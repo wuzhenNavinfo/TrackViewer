@@ -10,7 +10,6 @@ var users = require('./routes/users');
 var test = require('./routes/test');
 var photo = require('./routes/photo');
 var searchNode = require('./routes/searchNode');
-const appConfig = require('./server/config.js');
 var debug = require('debug')('myapp:server');
 var http = require('http');
 
@@ -22,13 +21,6 @@ app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
-
-app.use(function(req, res, next){
-    res.set({
-        'Access-Control-Allow-Origin': appConfig.editorOrigin
-    });
-    next();
-});
 
 app.use('/', index);
 app.use('/users', users);
