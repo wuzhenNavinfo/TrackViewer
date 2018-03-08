@@ -6,7 +6,6 @@ import bodyParser from 'body-parser'
 import router from './routes';
 import http from 'http';
 
-
 var debug = require('debug')('myapp:server');
 
 var app = express();
