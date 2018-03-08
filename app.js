@@ -3,9 +3,9 @@ import path from 'path';
 import logger from 'morgan';
 import cookieParser from 'cookie-parser';
 import bodyParser from 'body-parser'
-
 import router from './routes';
 import http from 'http';
+
 var debug = require('debug')('myapp:server');
 
 var app = express();
