@@ -101,3 +101,25 @@
     fileDir: 'E:\\github\\fastmap\\sources\\20180307-left' },
   { index: 2,
     fileDir: 'E:\\github\\fastmap\\sources\\20180307-right' } ]
+[2018-03-08T14:30:53.922] [ERROR] dateFile - 接口/trackView/business/list请求失败! Error: 自定义异常
+    at E:/github/fastmap/TrackViewer/routes/business.js:18:15
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+    at Function.handle (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:47:12)
+[2018-03-08T14:31:48.963] [ERROR] dateFile - 接口/trackView/business/list请求失败! Error: 自定义异常
+    at E:/github/fastmap/TrackViewer/routes/business.js:18:15
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+    at Function.handle (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:174:3)
+    at router (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:47:12)
