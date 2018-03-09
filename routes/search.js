@@ -4,7 +4,6 @@ var logger = require('../log4js').logger;
 var router = express.Router();
 
 router.get('/node', function(req, res, next) {
-    console.info('----', JSON.parse(req.query.parameter));
     try {
         let test = new Node(req, res, next);
         let parm = JSON.parse(req.query.parameter);

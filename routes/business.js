@@ -9,7 +9,7 @@ var router = express.Router();
 
 
 /**
- * 根
+ * 根据照片的文件名获取照片
  */
 router.get('/queryImage', function(req, res, next) {
     try {

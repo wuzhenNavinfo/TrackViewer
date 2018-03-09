@@ -119,3 +119,74 @@
     at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
     at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
     at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+[2018-03-09T10:48:42.446] [INFO] dateFile - TypeError: Cannot read property 'fileDir' of undefined
+    at new NewSqlite (E:/github/fastmap/TrackViewer/server/sqliteConnect.js:18:24)
+    at new SearchNode (E:/github/fastmap/TrackViewer/server/controller/node.js:11:19)
+    at E:/github/fastmap/TrackViewer/routes/search.js:9:20
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+[2018-03-09T10:50:18.498] [INFO] dateFile - [ { dirIndex: 0,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 1,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-left',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 2,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
+    createTime: '2018-03-08',
+    flag: 'center' } ]
+[2018-03-09T13:41:37.128] [INFO] dateFile - [ { dirIndex: 0,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 1,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-left',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 2,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
+    createTime: '2018-03-08',
+    flag: 'center' } ]
+[2018-03-09T13:42:08.673] [INFO] dateFile - [ { dirIndex: 0,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 1,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-left',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 2,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
+    createTime: '2018-03-08',
+    flag: 'center' } ]
+[2018-03-09T14:03:35.754] [INFO] dateFile - [ { dirIndex: 0,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 1,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-left',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 2,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
+    createTime: '2018-03-08',
+    flag: 'center' } ]
+[2018-03-09T14:04:40.727] [INFO] dateFile - [ { dirIndex: 0,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 1,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-left',
+    createTime: '2018-03-08',
+    flag: 'center' },
+  { dirIndex: 2,
+    fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
+    createTime: '2018-03-08',
+    flag: 'center' } ]
