@@ -86,3 +86,36 @@
   code: 'ENOENT',
   syscall: 'open',
   path: 'E:\\github\\fastmap\\sources\\20180307-left\\frames\\undefined' }
+[2018-03-09T10:42:15.518] [INFO] dateFile - TypeError: Cannot read property 'fileDir' of undefined
+    at new NewSqlite (E:/github/fastmap/TrackViewer/server/sqliteConnect.js:18:24)
+    at new SearchNode (E:/github/fastmap/TrackViewer/server/controller/node.js:11:19)
+    at E:/github/fastmap/TrackViewer/routes/search.js:9:20
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+[2018-03-09T10:43:21.945] [INFO] dateFile - TypeError: Cannot read property 'fileDir' of undefined
+    at new NewSqlite (E:/github/fastmap/TrackViewer/server/sqliteConnect.js:18:24)
+    at new SearchNode (E:/github/fastmap/TrackViewer/server/controller/node.js:11:19)
+    at E:/github/fastmap/TrackViewer/routes/search.js:9:20
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
+[2018-03-09T10:44:06.273] [INFO] dateFile - TypeError: Cannot read property 'fileDir' of undefined
+    at new NewSqlite (E:/github/fastmap/TrackViewer/server/sqliteConnect.js:18:24)
+    at new SearchNode (E:/github/fastmap/TrackViewer/server/controller/node.js:11:19)
+    at E:/github/fastmap/TrackViewer/routes/search.js:9:20
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+    at Route.dispatch (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:112:3)
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:281:22
+    at Function.process_params (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:335:12)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\index.js:275:10)
