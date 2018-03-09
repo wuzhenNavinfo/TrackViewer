@@ -2,8 +2,32 @@ import FilePathResolve from '../server/utils/FilePathResolve';
 import ResJson from '../server/utils/ResJson';
 import Business from '../server/controller/Business';
 import express from 'express';
+var fs = require('fs');
 var logger = require('../log4js').logger;
 var router = express.Router();
+
+
+
+/**
+ * 根
+ */
+router.get('/queryImage', function(req, res, next) {
+    try {
+        var dirIndex = req.query.dirIndex;
+        var image = req.query.image;
+        var fileObjs = FilePathResolve.getInstance().getSourceArr();
+        var fileObj = fileObjs[dirIndex];
+        var imagePath = fileObj.fileDir + '/frames/' + image;
+        res.setHeader('Content-Type', 'image/jpeg');
+        var content = fs.readFileSync(imagePath, 'binary');
+        res.writeHead(200, 'OK');
+        res.write(content, 'binary');
+        res.end();
+    } catch (error) {
+        logger.error('接口' + req.originalUrl + '请求失败!', error);
+        next(error);
+    }
+});
 
 /**
  * 根据index获取轨迹的所有照片信息
