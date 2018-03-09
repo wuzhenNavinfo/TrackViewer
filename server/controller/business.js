@@ -13,20 +13,25 @@ class Business {
             this.db.close();
         }
     }
+
+    /**
+     * 根据轨迹信息列表的额索引查询单个轨迹线以及对应的照片
+     */
     getPhotosByIndex() {
         let self = this;
         let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime  
                 from  track_collection a left join track_collection_photo b where a.id = b.id `
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                self.closeDb();
+
                 var fileObjs = new FilePathResolve().getSourceArr();
                 var fileObj = fileObjs[self.dirIndex];
                 logger.info(fileObjs);
                 var data = {
                     node: rows,
                     baesPath: fileObj.fileDir,
-                    flag: fileObj.flag
+                    flag: fileObj.flag,
+                    dirIndex: self.dirIndex
                 }
 
                 var resJson = new ResJson();
@@ -34,6 +39,7 @@ class Business {
                 self.res.json(resJson);
             });
         });
+        self.closeDb();
     }
 }
 
