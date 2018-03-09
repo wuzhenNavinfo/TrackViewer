@@ -1,44 +1,40 @@
 import NewSqlite from './../sqliteConnect.js';
-import MercatorProjection from '../utils/MercatorProjection.js';
+import ResJson from '../utils/ResJson';
+import FilePathResolve from '../utils/FilePathResolve';
+var logger = require('../../log4js').logger;
 
-class SearchNode {
-    constructor(req, res, next) {
-        this.req = req;
+class Business {
+
+    constructor(req, res) {
         this.res = res;
-        this.next = next;
-        this.db = new NewSqlite().newConnect();
-        console.log(this.db);
+        this.dirIndex = req.query.dirIndex;
+        this.db = new NewSqlite(this.dirIndex).newConnect();
         this.closeDb = function() {
             this.db.close();
         }
     }
-    list(x, y, z, gap) {
+    getPhotosByIndex() {
         let self = this;
-        const wkt = MercatorProjection.getWktWithGap(x, y, z, 0);
-        let sql = 'select id, linkId, AsWKT(a.geometry) AS geometry from track_collection a where  PtDistWithin(a.geometry, GeomFromText("' + wkt + '"), 1)';
-
-        const px = MercatorProjection.tileXToPixelX(x);
-        const py = MercatorProjection.tileYToPixelY(y);
+        let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime  
+                from  track_collection a left join track_collection_photo b where a.id = b.id `
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
                 self.closeDb();
-                let dataArray = [];
-                for(let i = 0; i < rows.length; i++){
-                    if (rows[i].geometry) {
-                        let snapShot = {
-                            g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
-                            t: 1,
-                            i: rows[i].id,
-                            m: {}
-                        };
-                        snapShot.m.a = rows[i].linkId;
-                        dataArray.push(snapShot);
-                    }
+                var fileObjs = new FilePathResolve().getSourceArr();
+                var fileObj = fileObjs[self.dirIndex];
+                logger.info(fileObjs);
+                var data = {
+                    node: rows,
+                    baesPath: fileObj.fileDir,
+                    flag: fileObj.flag
                 }
-                self.res.json({ errcode: 0, data: dataArray });
+
+                var resJson = new ResJson();
+                resJson.data = data;
+                self.res.json(resJson);
             });
         });
     }
 }
 
-export default SearchNode;
+export default Business;
