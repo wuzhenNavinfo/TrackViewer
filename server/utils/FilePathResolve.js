@@ -4,6 +4,13 @@ var dateFormat = require('dateformat');
 var fs = require('fs');
 var path = require('path');
 
+
+/**
+ * 文件夹路径解析类 (单例类)
+ * @author    wuzhen
+ * @date      2018/03/08
+ * @copyright @Navinfo, all rights reserved.
+ */
 export default class Config {
     /**
      * 类的实例对象
@@ -24,7 +31,7 @@ export default class Config {
      * @returns {undefined}
      */
     constructor () {
-        this.sourceArr = [];
+        this._sourceArr = [];
         let filePath = conf.fileUrl;
         this.fileDisplay(filePath);
     }
@@ -41,13 +48,20 @@ export default class Config {
         var files = fs.readdirSync(filePath);
         files.forEach((filename, index) => {
             let fileDir = path.join(filePath, filename);
+            let flag = 'center';
+            if (filePath.endsWith('-left')) {
+                flag = 'left';
+            } else if (filePath.endsWith('-right')) {
+                flag = 'right';
+            }
             let stat = fs.statSync(filePath);
             var dirObj = {
-                index: index,
+                dirIndex: index,
                 fileDir: fileDir,
-                createTime: dateFormat(stat.ctime, 'yyyy-mm-dd')
+                createTime: dateFormat(stat.ctime, 'yyyy-mm-dd'),
+                flag: flag
             }
-            this.sourceArr.push(dirObj);
+            this._sourceArr.push(dirObj);
         });
     }
 
@@ -56,7 +70,7 @@ export default class Config {
      * @returns {Array}
      */
     getSourceArr = function () {
-        return this.sourceArr;
+        return this._sourceArr;
     }
 
     static getInstance() {

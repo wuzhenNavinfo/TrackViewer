@@ -1,5 +1,6 @@
 import NewSqlite from './../sqliteConnect.js';
 import MercatorProjection from '../utils/MercatorProjection.js';
+import ResJson from '../utils/ResJson';
 
 class SearchNode {
     constructor(req, res, next) {
@@ -35,7 +36,9 @@ class SearchNode {
                         dataArray.push(snapShot);
                     }
                 }
-                self.res.json({ errcode: 0, data: dataArray });
+                var resJson = new ResJson();
+                resJson.data = dataArray;
+                self.res.json(resJson);
             });
         });
     }
