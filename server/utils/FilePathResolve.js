@@ -69,25 +69,6 @@ export default class Config {
                 }
             });
         });
-        logger.info(self._sourceArr);
-    //     var files = fs.readdirSync(filePath);
-    //     files.forEach((filename, index) => {
-    //         let fileDir = path.join(filePath, filename);
-    //         let flag = 'center';
-    //         if (filePath.endsWith('-left')) {
-    //             flag = 'left';
-    //         } else if (filePath.endsWith('-right')) {
-    //             flag = 'right';
-    //         }
-    //         let stat = fs.statSync(filePath);
-    //         var dirObj = {
-    //             dirIndex: index,
-    //             fileDir: fileDir,
-    //             createTime: dateFormat(stat.ctime, 'yyyy-mm-dd'),
-    //             flag: flag
-    //         }
-    //         this._sourceArr.push(dirObj);
-    //     });
     }
 
     /**
