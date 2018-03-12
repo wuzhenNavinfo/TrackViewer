@@ -6,9 +6,9 @@ class SearchNode {
     constructor(req, res, next) {
         this.req = req;
         this.res = res;
-        this.next = next;
-        this.db = new NewSqlite().newConnect();
-        console.log(this.db);
+        let parm = JSON.parse(req.query.parameter);
+        let dirIndex = parm.dirIndex;
+        this.db = new NewSqlite(dirIndex).newConnect();
         this.closeDb = function() {
             this.db.close();
         }
@@ -22,7 +22,6 @@ class SearchNode {
         const py = MercatorProjection.tileYToPixelY(y);
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                self.closeDb();
                 let dataArray = [];
                 for(let i = 0; i < rows.length; i++){
                     if (rows[i].geometry) {
@@ -41,6 +40,7 @@ class SearchNode {
                 self.res.json(resJson);
             });
         });
+        self.closeDb();
     }
 }
 

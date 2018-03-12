@@ -15,7 +15,7 @@ class NewSqlite {
                 break;
             }
         }
-        this.fileUrl = fileDirObj.fileDir + '/playback-img.sqlite';
+        this.fileUrl = fileDirObj.sqlPath;
     }
 
     /**

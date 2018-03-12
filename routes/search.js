@@ -1,9 +1,9 @@
 import Node from '../server/controller/node.js';
 import express from 'express';
+var logger = require('../log4js').logger;
 var router = express.Router();
 
 router.get('/node', function(req, res, next) {
-    console.info('----', JSON.parse(req.query.parameter));
     try {
         let test = new Node(req, res, next);
         let parm = JSON.parse(req.query.parameter);
@@ -14,6 +14,7 @@ router.get('/node', function(req, res, next) {
         // test.searchByTile(3375, 1774, 12);
         test.searchByTile(x, y, z);
     } catch (error) {
+        logger.info(error);
         next(error);
     }
 });
