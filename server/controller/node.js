@@ -16,27 +16,34 @@ class SearchNode {
     searchByTile(x, y, z, gap) {
         let self = this;
         const wkt = MercatorProjection.getWktWithGap(x, y, z, 0);
-        let sql = 'select id, linkId, AsWKT(a.geometry) AS geometry from track_collection a where  PtDistWithin(a.geometry, GeomFromText("' + wkt + '"), 1)';
+        let sql = `select a.id as id, AsWKT(a.geometry) AS geometry from track_collection a,  track_collection_photo b 
+                where a.id = b.id and PtDistWithin(a.geometry, GeomFromText('${wkt}'), 1)`;
 
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                let dataArray = [];
-                for(let i = 0; i < rows.length; i++){
-                    if (rows[i].geometry) {
-                        let snapShot = {
-                            g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
-                            t: 1,
-                            i: rows[i].id,
-                            m: {}
-                        };
-                        snapShot.m.a = rows[i].linkId;
-                        dataArray.push(snapShot);
-                    }
-                }
                 var resJson = new ResJson();
-                resJson.data = dataArray;
+                if (!err) {
+                    let dataArray = [];
+                    for(let i = 0; i < rows.length; i++){
+                        if (rows[i].geometry) {
+                            let snapShot = {
+                                g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
+                                t: 1,
+                                i: rows[i].id,
+                                m: {}
+                            };
+                            snapShot.m.a = rows[i].linkId;
+                            dataArray.push(snapShot);
+                        }
+                    }
+
+                    resJson.data = dataArray;
+                } else {
+                    resJson.errcode = -1;
+                    resJson.errmsg = err.message;
+                }
                 self.res.json(resJson);
             });
         });
