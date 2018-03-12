@@ -25,18 +25,24 @@ class Business {
                 from  track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                logger.info(rows.length);
-                var fileObjs = new FilePathResolve().getSourceArr();
-                var fileObj = fileObjs[self.dirIndex];
-                var data = {
-                    node: rows,
-                    baesPath: fileObj.baseDir,
-                    flag: fileObj.flag,
-                    dirIndex: self.dirIndex
-                }
-
                 var resJson = new ResJson();
-                resJson.data = data;
+                if (!err) {
+                    rows.forEach(function (item, index) {
+                        item.index = index; // 增加序号
+                    })
+                    var fileObjs = new FilePathResolve().getSourceArr();
+                    var fileObj = fileObjs[self.dirIndex];
+                    var data = {
+                        node: rows,
+                        baesPath: fileObj.baseDir,
+                        flag: fileObj.flag,
+                        dirIndex: self.dirIndex
+                    }
+                    resJson.data = data;
+                } else {
+                    resJson.errmsg = err.message;
+                    resJson.errcode = -1;
+                }
                 self.res.json(resJson);
             });
         });
