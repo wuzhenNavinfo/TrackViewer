@@ -38,31 +38,56 @@ export default class Config {
 
     /**
      * 根据一个几何范围和geoLiveType选择要素
-     * 如果geoLiveTypes为undefined或null,则查找所有类型要素
-     * 如果未找到匹配feature返回[].
-     * @param {Object} geometry 支持所有geoJson几何类型
+     * @param {String} string
      * @param {Array} geoLiveTypes - geoLiveType数组
      * @returns {Array} 所有被选中的feature数组
      */
     fileDisplay = function (filePath) {
-        var files = fs.readdirSync(filePath);
-        files.forEach((filename, index) => {
-            let fileDir = path.join(filePath, filename);
-            let flag = 'center';
-            if (filePath.endsWith('-left')) {
-                flag = 'left';
-            } else if (filePath.endsWith('-right')) {
-                flag = 'right';
-            }
-            let stat = fs.statSync(filePath);
-            var dirObj = {
-                dirIndex: index,
-                fileDir: fileDir,
-                createTime: dateFormat(stat.ctime, 'yyyy-mm-dd'),
-                flag: flag
-            }
-            this._sourceArr.push(dirObj);
+        var self = this;
+        var folder = ['center', 'left', 'right'];
+        folder.forEach(function (item, index) {
+            let baseDir = path.join(filePath,item);
+            let sqlPath = path.join(baseDir, 'playback.sqlite');
+
+            let dir = path.join(baseDir, 'videomode');
+            var files = fs.readdirSync(dir);
+            files.forEach(function (name) {
+                let d = path.join(dir, name);
+                let t = fs.statSync(d);
+                if (t.isDirectory()) {
+                    let fp = path.join(dir, name);
+                    let fileStat = fs.statSync(fp);
+                    var temp = {
+                        dirIndex: index,
+                        baseDir: baseDir,
+                        filePath: fp,
+                        sqlPath: sqlPath,
+                        createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
+                        flag: item
+                    };
+                    self._sourceArr.push(temp);
+                }
+            });
         });
+        logger.info(self._sourceArr);
+    //     var files = fs.readdirSync(filePath);
+    //     files.forEach((filename, index) => {
+    //         let fileDir = path.join(filePath, filename);
+    //         let flag = 'center';
+    //         if (filePath.endsWith('-left')) {
+    //             flag = 'left';
+    //         } else if (filePath.endsWith('-right')) {
+    //             flag = 'right';
+    //         }
+    //         let stat = fs.statSync(filePath);
+    //         var dirObj = {
+    //             dirIndex: index,
+    //             fileDir: fileDir,
+    //             createTime: dateFormat(stat.ctime, 'yyyy-mm-dd'),
+    //             flag: flag
+    //         }
+    //         this._sourceArr.push(dirObj);
+    //     });
     }
 
     /**

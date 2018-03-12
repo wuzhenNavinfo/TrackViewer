@@ -190,3 +190,91 @@
     fileDir: 'E:\\github\\fastmap\\sources\\20180307-right',
     createTime: '2018-03-08',
     flag: 'center' } ]
+[2018-03-09T17:43:47.425] [ERROR] dateFile - 接口/trackView/business/queryImage?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at Function.getInstance (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:94:31)
+    at E:/github/fastmap/TrackViewer/routes/business.js:18:40
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+[2018-03-09T17:44:07.816] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+[2018-03-09T17:47:50.943] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+[2018-03-09T17:47:50.985] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+[2018-03-09T17:47:55.020] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+[2018-03-09T17:49:22.700] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! TypeError: path must be a string or Buffer
+    at TypeError (native)
+    at Object.fs.openSync (fs.js:642:18)
+    at Object.fs.readFileSync (fs.js:510:33)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5)
+    at next (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\route.js:137:13)
+[2018-03-09T17:52:33.769] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! { Error: EISDIR: illegal operation on a directory, read
+    at Error (native)
+    at Object.fs.readSync (fs.js:733:19)
+    at tryReadSync (fs.js:488:20)
+    at Object.fs.readFileSync (fs.js:536:19)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5) errno: -4068, code: 'EISDIR', syscall: 'read' }
+[2018-03-09T17:53:57.675] [ERROR] dateFile - 接口/trackView/business/list?dirIndex=1&image=1509763437367.jpg请求失败! { Error: EISDIR: illegal operation on a directory, read
+    at Error (native)
+    at Object.fs.readSync (fs.js:733:19)
+    at tryReadSync (fs.js:488:20)
+    at Object.fs.readFileSync (fs.js:536:19)
+    at E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:50:28
+    at Array.forEach (native)
+    at Config._initialiseProps.fileDisplay (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:48:16)
+    at new Config (E:/github/fastmap/TrackViewer/server/utils/FilePathResolve.js:36:14)
+    at E:/github/fastmap/TrackViewer/routes/business.js:52:31
+    at Layer.handle [as handle_request] (E:\github\fastmap\TrackViewer\node_modules\express\lib\router\layer.js:95:5) errno: -4068, code: 'EISDIR', syscall: 'read' }

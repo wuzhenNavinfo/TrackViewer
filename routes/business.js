@@ -2,11 +2,10 @@ import FilePathResolve from '../server/utils/FilePathResolve';
 import ResJson from '../server/utils/ResJson';
 import Business from '../server/controller/Business';
 import express from 'express';
+var path = require('path');
 var fs = require('fs');
 var logger = require('../log4js').logger;
 var router = express.Router();
-
-
 
 /**
  * 根据照片的文件名获取照片
@@ -17,7 +16,7 @@ router.get('/queryImage', function(req, res, next) {
         var image = req.query.image;
         var fileObjs = FilePathResolve.getInstance().getSourceArr();
         var fileObj = fileObjs[dirIndex];
-        var imagePath = fileObj.fileDir + '/frames/' + image;
+        var imagePath = path.join(fileObj.filePath,image);
         res.setHeader('Content-Type', 'image/jpeg');
         var content = fs.readFileSync(imagePath, 'binary');
         res.writeHead(200, 'OK');
@@ -36,8 +35,6 @@ router.get('/getPhotosByIndex', function(req, res, next) {
     try {
         let business = new Business(req, res);
         business.getPhotosByIndex();
-        // var resJson = new ResJson();
-        // res.json(resJson);
     } catch (error) {
         logger.error('接口' + req.originalUrl + '请求失败!', error);
         next(error);

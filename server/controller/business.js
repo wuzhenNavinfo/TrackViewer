@@ -19,17 +19,18 @@ class Business {
      */
     getPhotosByIndex() {
         let self = this;
+        // let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime
+        //         from  track_collection a left join track_collection_photo b where a.id = b.id `;
         let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime  
-                from  track_collection a left join track_collection_photo b where a.id = b.id `
+                from  track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-
+                logger.info(rows.length);
                 var fileObjs = new FilePathResolve().getSourceArr();
                 var fileObj = fileObjs[self.dirIndex];
-                logger.info(fileObjs);
                 var data = {
                     node: rows,
-                    baesPath: fileObj.fileDir,
+                    baesPath: fileObj.baseDir,
                     flag: fileObj.flag,
                     dirIndex: self.dirIndex
                 }
