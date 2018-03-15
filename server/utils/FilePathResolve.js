@@ -32,8 +32,7 @@ export default class Config {
      */
     constructor () {
         this._sourceArr = [];
-        let filePath = conf.fileUrl;
-        this.fileDisplay(filePath);
+        this.fileDisplay(conf.dataRoot);
     }
 
     /**
@@ -44,7 +43,7 @@ export default class Config {
      */
     fileDisplay = function (filePath) {
         var self = this;
-        var folder = ['center', 'left', 'right'];
+        var folder = ['center'];
         folder.forEach(function (item, index) {
             let baseDir = path.join(filePath,item);
             let sqlPath = path.join(baseDir, 'playback.sqlite');
