@@ -2,6 +2,9 @@ import FilePathResolve from '../server/utils/FilePathResolve';
 import ResJson from '../server/utils/ResJson';
 import Business from '../server/controller/Business';
 import express from 'express';
+import needle from 'needle';
+import conf from '../config/config';
+
 var path = require('path');
 var fs = require('fs');
 var logger = require('../log4js').logger;
@@ -46,17 +49,49 @@ router.get('/getPhotosByIndex', function(req, res, next) {
  */
 router.get('/list', function(req, res, next) {
     try {
-        let filePathResolve = new FilePathResolve();
-        let sourceArr = filePathResolve.getSourceArr();
-        let list = [];
+        const filePathResolve = new FilePathResolve();
+        const sourceArr = filePathResolve.getSourceArr();
+        const list = [];
         sourceArr.forEach(function (item, index, items) {
             item['type'] = '照片';
             list.push(item);
         })
 
-        var resJson = new ResJson();
+        const resJson = new ResJson();
         resJson.data = list;
         res.json(resJson);
+    } catch (error) {
+        logger.error('接口' + req.originalUrl + '请求失败!', error);
+        next(error);
+    }
+});
+
+/**
+ * 根据照片的文件名上传照片
+ */
+router.post('/uploadImage', function (req, res, next) {
+    try {
+        const dirIndex = req.query.dirIndex;
+        const image = req.query.image;
+        const accessToken = req.query.accessToken;
+        const dbId = req.query.dbId;
+        const objectPid = req.query.objectPid;
+        const fileObjs = FilePathResolve.getInstance().getSourceArr();
+        const fileObj = fileObjs[dirIndex];
+        const imagePath = path.join(fileObj.filePath, image);     
+
+        const data = {
+            parameter: JSON.stringify({
+                filetype: 'photo',
+                dbId: dbId,
+                pid: objectPid
+            }),
+            image: { file: imagePath, content_type: 'image/jpg' }
+        }
+
+        needle.post(conf.uploadUrl + '?access_token=' + accessToken, data, { multipart: true }, function (err, resp, body) {
+            res.json(resp.body);
+        });
     } catch (error) {
         logger.error('接口' + req.originalUrl + '请求失败!', error);
         next(error);

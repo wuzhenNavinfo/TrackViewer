@@ -11,4 +11,6 @@ node_modules/
 *.njsproj
 *.sln
 logs/
-data/
+/data/right
+/data/center
+/data/left
