@@ -27,9 +27,6 @@ class Business {
             self.db.all(sql, function(err, rows) {
                 var resJson = new ResJson();
                 if (!err) {
-                    rows.forEach(function (item, index) {
-                        item.index = index; // 增加序号
-                    })
                     var fileObjs = new FilePathResolve().getSourceArr();
                     var fileObj = fileObjs[self.dirIndex];
                     var data = {

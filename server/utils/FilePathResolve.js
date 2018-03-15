@@ -1,4 +1,3 @@
-import conf from '../../config/config';
 var logger = require('../../log4js').logger;
 var dateFormat = require('dateformat');
 var fs = require('fs');
@@ -32,7 +31,7 @@ export default class Config {
      */
     constructor () {
         this._sourceArr = [];
-        let filePath = conf.fileUrl;
+        let filePath = path.join(__dirname,'../../data');
         this.fileDisplay(filePath);
     }
 
@@ -47,27 +46,30 @@ export default class Config {
         var folder = ['center', 'left', 'right'];
         folder.forEach(function (item, index) {
             let baseDir = path.join(filePath,item);
-            let sqlPath = path.join(baseDir, 'playback.sqlite');
-
-            let dir = path.join(baseDir, 'videomode');
-            var files = fs.readdirSync(dir);
-            files.forEach(function (name) {
-                let d = path.join(dir, name);
-                let t = fs.statSync(d);
-                if (t.isDirectory()) {
-                    let fp = path.join(dir, name);
-                    let fileStat = fs.statSync(fp);
-                    var temp = {
-                        dirIndex: index,
-                        baseDir: baseDir,
-                        filePath: fp,
-                        sqlPath: sqlPath,
-                        createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
-                        flag: item
-                    };
-                    self._sourceArr.push(temp);
+            if (fs.existsSync(baseDir)){
+                let sqlPath = path.join(baseDir, 'playback.sqlite');
+                let dir = path.join(baseDir, 'videomode');
+                if (fs.existsSync(dir)) {
+                    var files = fs.readdirSync(dir);
+                    files.forEach(function (name) {
+                        let d = path.join(dir, name);
+                        let t = fs.statSync(d);
+                        if (t.isDirectory()) {
+                            let fp = path.join(dir, name);
+                            let fileStat = fs.statSync(fp);
+                            var temp = {
+                                dirIndex: index,
+                                baseDir: baseDir,
+                                filePath: fp,
+                                sqlPath: sqlPath,
+                                createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
+                                flag: item
+                            };
+                            self._sourceArr.push(temp);
+                        }
+                    });
                 }
-            });
+            }
         });
     }
 
