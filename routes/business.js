@@ -71,11 +71,14 @@ router.get('/list', function(req, res, next) {
  */
 router.post('/uploadImage', function (req, res, next) {
     try {
-        const dirIndex = req.query.dirIndex;
-        const image = req.query.image;
-        const accessToken = req.query.accessToken;
-        const dbId = req.query.dbId;
-        const objectPid = req.query.objectPid;
+        const {
+            dirIndex,
+            image,
+            accessToken,
+            dbId,
+            objectPid
+        } = req.body;
+        
         const fileObjs = FilePathResolve.getInstance().getSourceArr();
         const fileObj = fileObjs[dirIndex];
         const imagePath = path.join(fileObj.filePath, image);     
