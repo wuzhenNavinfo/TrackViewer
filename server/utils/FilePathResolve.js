@@ -1,3 +1,4 @@
+import conf from '../../config/config'
 var logger = require('../../log4js').logger;
 var dateFormat = require('dateformat');
 var fs = require('fs');
@@ -42,7 +43,7 @@ export default class Config {
      */
     fileDisplay = function (filePath) {
         var self = this;
-        var folder = ['center'];
+        var folder = ['center', 'left', 'right'];
         folder.forEach(function (item, index) {
             let baseDir = path.join(filePath,item);
             if (fs.existsSync(baseDir)){
