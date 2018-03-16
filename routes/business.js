@@ -19,7 +19,7 @@ router.get('/queryImage', function(req, res, next) {
         var image = req.query.image;
         var fileObjs = FilePathResolve.getInstance().getSourceArr();
         var fileObj = fileObjs[dirIndex];
-        var imagePath = path.join(fileObj.filePath,image);
+        var imagePath = path.join(fileObj.baseDir, image);
         res.setHeader('Content-Type', 'image/jpeg');
         var content = fs.readFileSync(imagePath, 'binary');
         res.writeHead(200, 'OK');
