@@ -81,7 +81,7 @@ router.post('/uploadImage', function (req, res, next) {
         
         const fileObjs = FilePathResolve.getInstance().getSourceArr();
         const fileObj = fileObjs[dirIndex];
-        const imagePath = path.join(fileObj.filePath, image);     
+        const imagePath = path.join(fileObj.baseDir, image);     
 
         const data = {
             parameter: JSON.stringify({
