@@ -19,6 +19,19 @@ class NewSqlite {
     }
 
     /**
+     *
+     * @param sqlPath 数据库文件的路径
+     * @return {sqlite.Database} 数据连接实例
+     */
+    static getConnect(sqlPath) {
+        var exists = fs.existsSync(sqlPath);
+        if (!exists) {
+            throw new Error('路径 ' + this.fileUrl + ' 下数据库文件不存在');
+        }
+        return new sqlite.Database(sqlPath);
+    };
+
+    /**
      * 建立数据库连接
      * @returns {sqlite.Database}
      */
