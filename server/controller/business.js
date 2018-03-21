@@ -25,7 +25,7 @@ class Business {
                 from  track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                logger.info(rows[0]);
+                // logger.info(rows[0]);
                 var resJson = new ResJson();
                 if (!err) {
                     var fileObjs = new FilePathResolve().getSourceArr();

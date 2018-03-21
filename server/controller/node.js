@@ -19,7 +19,7 @@ class SearchNode {
         const wkt = MercatorProjection.getWktWithGap(x, y, z, 0);
         let sql = `select a.id as id, AsWKT(a.geometry) AS geometry from track_collection a,  track_collection_photo b 
                 where a.id = b.id and Contains(GeomFromText('${wkt}'), a.geometry)`;
-        logger.info(sql);
+        // logger.info(sql);
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
         this.db.spatialite(function(err) {
