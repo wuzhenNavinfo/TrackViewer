@@ -9,7 +9,10 @@ class SearchNode {
         this.res = res;
         let parm = JSON.parse(req.query.parameter);
         let dirIndex = parm.dirIndex;
-        this.db = new NewSqlite(dirIndex).newConnect();
+        this.db = null;
+        if (!this.db) {
+            this.db = new NewSqlite(dirIndex).newConnect();
+        }
         this.closeDb = function() {
             this.db.close();
         }
@@ -48,7 +51,7 @@ class SearchNode {
                 self.res.json(resJson);
             });
         });
-        self.closeDb();
+        // self.closeDb();
     }
 }
 
