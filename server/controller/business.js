@@ -17,16 +17,28 @@ class Business {
     /**
      * 根据轨迹信息列表的额索引查询单个轨迹线以及对应的照片
      */
-    getPhotosByIndex() {
+    getPhotosByIndex(mode) {
         let self = this;
-        // let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime
-        //         from  track_collection a left join track_collection_photo b where a.id = b.id `;
-        let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.deviceNum, b.url,  b.shootTime  
-                from  track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
+        var resJson = new ResJson();
+        let trackTable = '';
+        let photoTable = '';
+
+        if (mode === 'videomode') {
+            trackTable = 'track_collection';
+            photoTable = 'track_collection_photo';
+        } else if (mode === 'photomode') {
+            trackTable = 'track_contshoot';
+            photoTable = 'track_contshoot_photo';
+        } else {
+            resJson.errmsg = 'mode参数有误！';
+            resJson.errcode = -1;
+            self.res.json(resJson);
+        }
+
+        let sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, b.url,  b.shootTime
+            from  ${trackTable} a , ${photoTable} b where a.id = b.id order by a.recordTime `;
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                // logger.info(rows[0]);
-                var resJson = new ResJson();
                 if (!err) {
                     var fileObjs = new FilePathResolve().getSourceArr();
                     var fileObj = fileObjs[self.dirIndex];

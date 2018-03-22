@@ -1,5 +1,6 @@
 import conf from '../../config/config'
 import NewSqlite from './../sqliteConnect';
+var lodash = require('lodash');
 var logger = require('../../log4js').logger;
 var dateFormat = require('dateformat');
 var fs = require('fs');
@@ -38,39 +39,63 @@ export default class Config {
     }
 
     /**
-     * 根据一个几何范围和geoLiveType选择要素
-     * @param {String} string
-     * @param {Array} geoLiveTypes - geoLiveType数组
-     * @returns {Array} 所有被选中的feature数组
+     * 查询filePath下的目录结构
+     * @param {String} string 路径
+     * @returns {Array} 返回数组对象，目录搜索到sqlite文件这一级，如果存在photomode目录则添加到返回值中，如果存在videomode目录则添加到返回值中.
      */
     fileDisplay = function (filePath) {
         var self = this;
         var folder = ['center', 'left', 'right'];
+        var dirIndex = 0;
         folder.forEach(function (item, index) {
-            let baseDir = path.join(filePath,item);
+            let baseDir = path.join(filePath,item); // data/center
             if (fs.existsSync(baseDir)){
                 let sqlPath = path.join(baseDir, 'playback.sqlite');
-                let dir = path.join(baseDir, 'videomode');
-                if (fs.existsSync(dir)) {
-                    var files = fs.readdirSync(dir);
-                    files.forEach(function (name) {
-                        let d = path.join(dir, name);
-                        let t = fs.statSync(d);
-                        if (t.isDirectory()) {
-                            let fp = path.join(dir, name);
-                            let fileStat = fs.statSync(fp);
-                            var temp = {
-                                dirIndex: index,
-                                baseDir: baseDir,
-                                filePath: fp,
-                                sqlPath: sqlPath,
-                                createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
-                                flag: item
-                            };
-                            self._sourceArr.push(temp);
-                        }
-                    });
+                if (fs.existsSync(sqlPath)) {
+                    let fileStat = fs.statSync(baseDir);
+                    var temp = {
+                        baseDir: baseDir,
+                        sqlPath: sqlPath,
+                        createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
+                        flag: item
+                    };
+                    let photomodePath = path.join(baseDir, 'photomode');
+                    if (fs.existsSync(photomodePath)) {
+                        temp.mode = 'photomode';
+                        temp.dirIndex = dirIndex++;
+                        temp.filePath = photomodePath;
+                        self._sourceArr.push(temp);
+                    }
+                    let videomodePath = path.join(baseDir, 'videomode');
+                    if (fs.existsSync(videomodePath)) {
+                        temp = lodash.clone(temp);
+                        temp.mode = 'videomode';
+                        temp.dirIndex = dirIndex++;
+                        temp.filePath = videomodePath;
+                        self._sourceArr.push(temp);
+                    }
                 }
+                // let dir = path.join(baseDir, 'photomode');
+                // if (fs.existsSync(dir)) {
+                //     var files = fs.readdirSync(dir);
+                //     files.forEach(function (name) {
+                //         let d = path.join(dir, name);
+                //         let t = fs.statSync(d);
+                //         if (t.isDirectory()) {
+                //             let fp = path.join(dir, name);
+                //             let fileStat = fs.statSync(fp);
+                //             var temp = {
+                //                 dirIndex: dirIndex++,
+                //                 baseDir: baseDir,
+                //                 filePath: fp,
+                //                 sqlPath: sqlPath,
+                //                 createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
+                //                 flag: item
+                //             };
+                //             self._sourceArr.push(temp);
+                //         }
+                //     });
+                // }
             }
         });
         // this.createTempTable();

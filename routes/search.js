@@ -10,9 +10,8 @@ router.get('/node', function(req, res, next) {
         let x = parm.x;
         let y = parm.y;
         let z = parm.z;
-        // test.searchByTile(210, 110, 8);
-        // test.searchByTile(3375, 1774, 12);
-        test.searchByTile(x, y, z);
+        let mode = parm.mode;
+        test.searchByTile(x, y, z, mode);
     } catch (error) {
         logger.info(error);
         next(error);
