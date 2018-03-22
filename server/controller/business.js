@@ -7,7 +7,8 @@ class Business {
 
     constructor(req, res) {
         this.res = res;
-        this.dirIndex = req.query.dirIndex;
+        let parm = JSON.parse(req.query.parameter);
+        this.dirIndex = parm.dirIndex;
         this.db = new NewSqlite(this.dirIndex).newConnect();
         this.closeDb = function() {
             this.db.close();
