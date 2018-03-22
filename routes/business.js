@@ -37,7 +37,8 @@ router.get('/queryImage', function(req, res, next) {
 router.get('/getPhotosByIndex', function(req, res, next) {
     try {
         let business = new Business(req, res);
-        business.getPhotosByIndex();
+        let mode = req.query.mode;
+        business.getPhotosByIndex(mode);
     } catch (error) {
         logger.error('接口' + req.originalUrl + '请求失败!', error);
         next(error);

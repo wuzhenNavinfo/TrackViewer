@@ -17,17 +17,32 @@ class SearchNode {
             this.db.close();
         }
     }
-    searchByTile(x, y, z, gap) {
+    searchByTile(x, y, z, mode) {
         let self = this;
+        let  resJson = new ResJson();
+        let trackTable = '';
+        let photoTable = '';
         const wkt = MercatorProjection.getWktWithGap(x, y, z, 0);
-        let sql = `select a.id as id, AsWKT(a.geometry) AS geometry from track_collection a,  track_collection_photo b 
+
+        if (mode === 'videomode') {
+            trackTable = 'track_collection';
+            photoTable = 'track_collection_photo';
+        } else if (mode === 'photomode') {
+            trackTable = 'track_contshoot';
+            photoTable = 'track_contshoot_photo';
+        } else {
+            resJson.errmsg = 'mode参数有误！';
+            resJson.errcode = -1;
+            self.res.json(resJson);
+        }
+
+        let sql = `select a.id as id, AsWKT(a.geometry) AS geometry from ${trackTable} a,  ${photoTable} b
                 where a.id = b.id and Contains(GeomFromText('${wkt}'), a.geometry)`;
         // logger.info(sql);
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
         this.db.spatialite(function(err) {
             self.db.all(sql, function(err, rows) {
-                var resJson = new ResJson();
                 if (!err) {
                     let dataArray = [];
                     for(let i = 0; i < rows.length; i++){
