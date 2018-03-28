@@ -78,20 +78,21 @@ class Business {
 
             // -------此处需要改善
         }
-
+        // 返回 当前点和前一个点以及后一个点。
         let innerSql = `select aa.recordTime from ${trackTable} aa , ${photoTable} bb where aa.id = bb.id and aa.id = '${id}' `;
-
-        let wholeSql = `select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsWKT(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime < ( ${innerSql} ) order by a.recordTime desc limit 1 ) temp1  
+        let wholeSql = `select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsGeoJSON(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime < ( ${innerSql} ) order by a.recordTime desc limit 1 ) temp1  
                     union all
-                        select id, recordTime, geometry, url as url from (select a.id, a.recordTime, AsWKT(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id and a.id = '${id}') temp            
+                        select id, recordTime, geometry, url as url from (select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id and a.id = '${id}') temp            
                     union all
-                        select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsWKT(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime > ( ${innerSql} ) order by a.recordTime limit 1) tmep2
+                        select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsGeoJSON(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime > ( ${innerSql} ) order by a.recordTime limit 1) tmep2
         `;
+        if (!id) { // 当id为空是只返第一个和第二点
+            wholeSql = ` select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id order by a.recordTime  limit 2 `;
+        }
 
         this.db.spatialite(function(err) {
             self.db.all(wholeSql, function(err, rows) {
                 if (!err) {
-
                     resJson.data = rows;
                 } else {
                     logger.error(err);
