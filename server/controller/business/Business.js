@@ -85,7 +85,7 @@ class Business {
                         select id, recordTime, geometry, url as url from (select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id and a.id = '${id}') temp            
                     union all
                         select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsGeoJSON(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime > ( ${innerSql} ) order by a.recordTime limit 1) tmep2
-        `;
+                    `;
         if (!id) { // 当id为空是只返第一个和第二点
             wholeSql = ` select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id order by a.recordTime  limit 2 `;
         }
