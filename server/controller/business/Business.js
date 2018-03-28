@@ -93,7 +93,15 @@ class Business {
         this.db.spatialite(function(err) {
             self.db.all(wholeSql, function(err, rows) {
                 if (!err) {
-                    resJson.data = rows;
+                    var fileObjs = new FilePathResolve().getSourceArr();
+                    var fileObj = fileObjs[self.dirIndex];
+                    var data = {
+                        nodes: rows,
+                        baesPath: fileObj.baseDir,
+                        flag: fileObj.flag,
+                        dirIndex: self.dirIndex
+                    }
+                    resJson.data = data;
                 } else {
                     logger.error(err);
                     resJson.errmsg = err.message;
