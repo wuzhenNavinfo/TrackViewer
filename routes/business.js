@@ -10,6 +10,29 @@ var fs = require('fs');
 var logger = require('../log4js').logger;
 var router = express.Router();
 
+
+/**
+ * 获取点信息
+ */
+router.get('/queryNodeDeail', function(req, res, next) {
+    try {
+        let param = req.query.parameter;
+        const {
+            dirIndex,
+            id
+        } = JSON.parse(param);
+        let fileObjs = FilePathResolve.getInstance().getSourceArr();
+        let fileObj = fileObjs[dirIndex];
+        let business = new Business(req, res);
+        let mode = fileObj.mode;
+        business.getNodeDeatil(id, mode);
+
+    } catch (error) {
+        logger.error('接口' + req.originalUrl + '请求失败!', error);
+        next(error);
+    }
+});
+
 /**
  * 根据照片的文件名获取照片
  */
