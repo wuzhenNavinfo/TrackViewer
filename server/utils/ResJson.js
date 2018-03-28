@@ -10,13 +10,13 @@ export default class ResJson {
 
     errmsg = '';
 
-    data = null;
+    data = {};
 
     /**
      * 构造方法.
      * @returns {undefined}
      */
-    constructor (errcode = 0, errmsg = '', data = null) {
+    constructor (errcode = 0, errmsg = '', data = {}) {
         this.errcode = errcode;
         this.errmsg = errmsg;
         this.data = data;
