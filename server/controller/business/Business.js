@@ -61,26 +61,40 @@ class Business {
     }
 
     getNodeDeatil(id, mode) {
-        let linkTable = '';
+        let trackTable = '';
+        let photoTable = '';
         let resJson = new ResJson();
         let self = this;
         if (mode === 'videomode') {
-            linkTable = 'link_temp';
+            trackTable = 'track_collection';
+            photoTable = 'track_collection_photo';
         } else if (mode === 'photomode') {
-            linkTable = 'link_temp';
+            trackTable = 'track_contshoot';
+            photoTable = 'track_contshoot_photo';
         } else {
             resJson.errmsg = 'mode参数有误！';
             resJson.errcode = -1;
             self.res.json(resJson);
+
+            // -------此处需要改善
         }
 
+        let innerSql = `select aa.recordTime from ${trackTable} aa , ${photoTable} bb where aa.id = bb.id and aa.id = '${id}' `;
+
+        let wholeSql = `select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsWKT(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime < ( ${innerSql} ) order by a.recordTime desc limit 1 ) temp1  
+                    union all
+                        select id, recordTime, geometry, url as url from (select a.id, a.recordTime, AsWKT(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id and a.id = '${id}') temp            
+                    union all
+                        select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsWKT(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime > ( ${innerSql} ) order by a.recordTime limit 1) tmep2
+        `;
 
         this.db.spatialite(function(err) {
-            self.db.all(sql, function(err, rows) {
+            self.db.all(wholeSql, function(err, rows) {
                 if (!err) {
 
                     resJson.data = rows;
                 } else {
+                    logger.error(err);
                     resJson.errmsg = err.message;
                     resJson.errcode = -1;
                 }
