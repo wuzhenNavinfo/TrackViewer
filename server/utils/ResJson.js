@@ -5,13 +5,6 @@
  * @copyright @Navinfo, all rights reserved.
  */
 export default class ResJson {
-
-    errcode = 0;
-
-    errmsg = '';
-
-    data = {};
-
     /**
      * 构造方法.
      * @returns {undefined}

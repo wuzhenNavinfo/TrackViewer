@@ -50,12 +50,7 @@ class SearchNode {
         if (!search) {
             return Promise.reject("没有找到对应的查询解析器!");
         }
-        const promise = new Promise(async function (resolve, reject) {
-            let s = await search.getByTileByMode(x, y, z, mode);
-            resolve(s);
-            // 需要处理失败是的情况
-        })
-        return promise;
+        return search.getByTileByMode(x, y, z, mode)
     }
 }
 

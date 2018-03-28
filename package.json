@@ -2,6 +2,7 @@
     "name": "myapp",
     "version": "0.0.0",
     "private": true,
+    "bin": "index.js",
     "scripts": {
         "start": "nodemon index.js --exec babel-node",
         "build": "rimraf dist/ && babel ./ --out-dir dist/ --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --copy-files",
@@ -30,5 +31,22 @@
         "babel-preset-stage-2": "^6.24.1",
         "nodemon": "^1.14.12",
         "rimraf": "^2.6.2"
+    },
+    "pkg": {
+        "scripts ": [
+            "config/*.js",
+            "routes/*.js",
+            "server/utils/ResJson.js",
+            "server/**/*.js",
+            "server/*.js",
+            "app.js",
+            "log4js.js"
+        ],
+        "assets": [
+            "logs/**"
+        ],
+        "targets": [
+            "node6"
+        ]
     }
 }

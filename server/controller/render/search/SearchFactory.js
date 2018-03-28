@@ -1,5 +1,5 @@
-import NodeSearch from './NodeSearch';
-import LinkSearch from './LinkSearch';
+import NodeSearch from './NodeSearch.js';
+import LinkSearch from './LinkSearch.js';
 
 class SearchFactory {
     constructor() {
