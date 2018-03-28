@@ -1,6 +1,6 @@
 import FilePathResolve from '../server/utils/FilePathResolve';
 import ResJson from '../server/utils/ResJson';
-import Business from '../server/controller/Business';
+import Business from '../server/controller/business/Business';
 import express from 'express';
 import needle from 'needle';
 import conf from '../config/config';
