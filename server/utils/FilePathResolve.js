@@ -135,7 +135,7 @@ export default class Config {
                         'geometry' GEOMETRY )`;
                 db.all(sql ,function (err, rows) {
                     sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime
-                    from track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime`;
+                    from track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
                     db.all(sql, function(err, rows) {
                         if (rows.length < 1) {
                             return;

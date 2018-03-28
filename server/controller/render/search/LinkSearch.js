@@ -33,7 +33,6 @@ class LinkSearch extends Search{
 
         let sql = `select a.id, a.sNodePid, a.eNodePid, AsWKT(a.geometry) AS geometry from link_temp a 
                 where Intersects(GeomFromText('${wkt}'), a.geometry) `;
-        logger.info(sql);
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
 
@@ -44,7 +43,7 @@ class LinkSearch extends Search{
             if (rows[i].geometry) {
                 let snapShot = {
                     g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
-                    t: 1,
+                    t: 2, // 表示线
                     i: rows[i].id,
                     m: {}
                 };
@@ -64,13 +63,14 @@ class LinkSearch extends Search{
         return new Promise((resolve, reject) => {
             this.db.spatialite(function(er) {
                 if (er) {
+                    logger.info(er);
                     reject(er);
                 } else {
                     self.db.all(sql, function(err, rows) {
                         if (err) {
+                            logger.info(err);
                             reject(err);
                         } else {
-                            logger.info(rows);
                             resolve(rows);
                         }
                     });

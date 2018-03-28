@@ -38,7 +38,6 @@ class SearchNode extends Search{
 
         let sql = `select a.id as id, AsWKT(a.geometry) AS geometry from ${trackTable} a,  ${photoTable} b
                 where a.id = b.id and Contains(GeomFromText('${wkt}'), a.geometry)`;
-        logger.info(sql);
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
 
@@ -49,7 +48,7 @@ class SearchNode extends Search{
             if (rows[i].geometry) {
                 let snapShot = {
                     g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),
-                    t: 1,
+                    t: 1, // 表示点
                     i: rows[i].id,
                     m: {}
                 };
@@ -68,13 +67,15 @@ class SearchNode extends Search{
         return new Promise((resolve, reject) => {
             this.db.spatialite(function(er) {
                 if (er) {
+                    logger.error(er);
                     reject(er);
                 } else {
                     self.db.all(sql, function(err, rows) {
                         if (err) {
+                            logger.error(err);
                             reject(err);
                         } else {
-                            logger.info(rows);
+
                             resolve(rows);
                         }
                     });
