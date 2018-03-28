@@ -14,7 +14,7 @@ var router = express.Router();
 /**
  * 获取点信息
  */
-router.get('/queryNodeDeail', function(req, res, next) {
+router.get('/queryNodeDetail', function(req, res, next) {
     try {
         let param = req.query.parameter;
         const {

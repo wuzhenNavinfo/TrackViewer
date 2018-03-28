@@ -85,7 +85,7 @@ class Business {
                         select id, recordTime, geometry, url as url from (select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id and a.id = '${id}') temp            
                     union all
                         select id, recordTime, geometry, '' as url from (select a.id,  a.recordTime, AsGeoJSON(a.geometry) geometry from ${trackTable} a , ${photoTable} b where a.id = b.id and a.recordTime > ( ${innerSql} ) order by a.recordTime limit 1) tmep2
-        `;
+                    `;
         if (!id) { // 当id为空是只返第一个和第二点
             wholeSql = ` select a.id, a.recordTime, AsGeoJSON(a.geometry) geometry, b.url from ${trackTable} a , ${photoTable} b where a.id = b.id order by a.recordTime  limit 2 `;
         }
@@ -93,15 +93,7 @@ class Business {
         this.db.spatialite(function(err) {
             self.db.all(wholeSql, function(err, rows) {
                 if (!err) {
-                    var fileObjs = new FilePathResolve().getSourceArr();
-                    var fileObj = fileObjs[self.dirIndex];
-                    var data = {
-                        nodes: rows,
-                        baesPath: fileObj.baseDir,
-                        flag: fileObj.flag,
-                        dirIndex: self.dirIndex
-                    }
-                    resJson.data = data;
+                    resJson.data = rows;
                 } else {
                     logger.error(err);
                     resJson.errmsg = err.message;
