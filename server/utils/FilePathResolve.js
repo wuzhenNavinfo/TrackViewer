@@ -1,5 +1,5 @@
 import conf from '../../config/config'
-import NewSqlite from './../sqliteConnect';
+import NewSqlite from '../sqliteConnect';
 var lodash = require('lodash');
 var logger = require('../../log4js').logger;
 var dateFormat = require('dateformat');
@@ -13,20 +13,7 @@ var path = require('path');
  * @date      2018/03/08
  * @copyright @Navinfo, all rights reserved.
  */
-export default class Config {
-    /**
-     * 类的实例对象
-     * @type {null}
-     */
-    static instance = null;
-
-    /**
-     * 遍历目录后的数据
-     * @type {Array}
-     * @private
-     */
-    _sourceArr = [];
-
+class FilePathResolve {
     /**
      * 构造方法.
      *
@@ -43,7 +30,7 @@ export default class Config {
      * @param {String} string 路径
      * @returns {Array} 返回数组对象，目录搜索到sqlite文件这一级，如果存在photomode目录则添加到返回值中，如果存在videomode目录则添加到返回值中.
      */
-    fileDisplay = function (filePath) {
+    fileDisplay (filePath) {
         var self = this;
         var folder = ['center', 'left', 'right'];
         var dirIndex = 0;
@@ -100,7 +87,7 @@ export default class Config {
         });
         // this.createTempTable();
         // this.queryLink();
-    };
+    }
 
     queryLink () {
         let sqlPath = this._sourceArr[1].sqlPath;
@@ -115,7 +102,7 @@ export default class Config {
                 logger.info(err,rows)
             });
         });
-    };
+    }
 
     createTempTable () {
         let sqlPath = this._sourceArr[0].sqlPath;
@@ -182,7 +169,7 @@ export default class Config {
         //         logger.info(err,rows)
         //     });
         // });
-    };
+    }
 
     /**
      * 获取默认配置路径下的文件夹路径
@@ -190,12 +177,14 @@ export default class Config {
      */
     getSourceArr () {
         return this._sourceArr;
-    };
+    }
 
     static getInstance() {
-        if (!Config.instance) {
-            Config.instance = new Config();
+        if (!this.instance) {
+            this.instance = new FilePathResolve();
         }
-        return Config.instance;
+        return this.instance;
     }
 }
+FilePathResolve.instance = null;
+export default FilePathResolve;

@@ -33,8 +33,8 @@ let allowCrossDomain = function(req, res, next) {
 app.use(allowCrossDomain);
 
 router(app);
-
-app.use(express.static(path.join(__dirname, 'public')));
+//
+// app.use(express.static(path.join(__dirname, 'public')));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
