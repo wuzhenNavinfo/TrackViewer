@@ -1,4 +1,6 @@
-import NewSqlite from '../../../sqliteConnect.js';
+var NewSqlite = require('../../../sqliteConnect.js');
+// import NewSqlite from '../../../sqliteConnect.js';
+
 var logger = require('../../../../log4js').logger;
 
 class Search {
@@ -41,4 +43,5 @@ class Search {
         })
     }
 }
-export default Search;
+// export default Search;
+module.exports = Search;

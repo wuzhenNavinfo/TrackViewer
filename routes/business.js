@@ -1,9 +1,16 @@
-import FilePathResolve from '../server/utils/FilePathResolve';
-import ResJson from '../server/utils/ResJson';
-import Business from '../server/controller/business/Business';
-import express from 'express';
-import needle from 'needle';
-import conf from '../config/config';
+var FilePathResolve = require('../server/utils/FilePathResolve.js');
+var ResJson = require('../server/utils/ResJson.js');
+var Business = require('../server/controller/business/Business.js');
+var express = require('express');
+var needle = require('needle');
+var conf = require('../config/config.js');
+
+// import FilePathResolve from '../server/utils/FilePathResolve';
+// import ResJson from '../server/utils/ResJson';
+// import Business from '../server/controller/business/Business';
+// import express from 'express';
+// import needle from 'needle';
+// import conf from '../config/config';
 
 var path = require('path');
 var fs = require('fs');
@@ -59,6 +66,7 @@ router.get('/queryImage', function(req, res, next) {
  */
 router.get('/getPhotosByIndex', function(req, res, next) {
     try {
+        logger.info("咋没日志呢！");
         let business = new Business(req, res);
         let parm = JSON.parse(req.query.parameter);
         let mode = parm.mode;
@@ -126,4 +134,5 @@ router.post('/uploadImage', function (req, res, next) {
     }
 });
 
-export default router;
+// export default router;
+module.exports = router;

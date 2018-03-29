@@ -1,5 +1,9 @@
-import ResJson from '../../utils/ResJson';
-import SearchFactory from './search/SearchFactory'
+var ResJson = require('../../utils/ResJson.js');
+var SearchFactory = require('./search/SearchFactory.js');
+
+// import ResJson from '../../utils/ResJson';
+// import SearchFactory from './search/SearchFactory'
+
 var logger = require('../../../log4js').logger;
 
 class SearchNode {
@@ -9,7 +13,7 @@ class SearchNode {
         this.next = next;
     }
 
-    async getObjByTile() {
+    getObjByTile() {
         const self = this;
         const param = JSON.parse(this.req.query.parameter);
         let json = new ResJson();
@@ -54,4 +58,5 @@ class SearchNode {
     }
 }
 
-export default SearchNode;
+// export default SearchNode;
+module.exports = SearchNode;
