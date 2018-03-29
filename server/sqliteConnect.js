@@ -1,5 +1,9 @@
-import sqlite from 'spatialite';
-import FilePathResolve from './utils/FilePathResolve';
+var sqlite = require('spatialite');
+var FilePathResolve = require('./utils/FilePathResolve.js');
+
+// import sqlite from 'spatialite';
+// import FilePathResolve from './utils/FilePathResolve';
+
 var logger = require('../log4js').logger;
 var fs = require('fs')
 
@@ -43,4 +47,5 @@ class NewSqlite {
         return new sqlite.Database(this.fileUrl);
     }
 }
-export default NewSqlite;
+// export default NewSqlite;
+module.exports = NewSqlite;

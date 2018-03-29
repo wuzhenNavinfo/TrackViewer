@@ -1,4 +1,5 @@
-import wktParser from 'terraformer-wkt-parser';
+var wktParser = require('terraformer-wkt-parser');
+// import wktParser from 'terraformer-wkt-parser';
 
 class MercatorProjection {
     constructor() {
@@ -459,4 +460,5 @@ class MercatorProjection {
     }
 }
 
-export default new MercatorProjection()
+// export default new MercatorProjection()
+module.exports = new MercatorProjection();

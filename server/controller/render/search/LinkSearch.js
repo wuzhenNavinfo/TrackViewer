@@ -1,6 +1,11 @@
-import MercatorProjection from '../../../utils/MercatorProjection.js';
-import ResJson from '../../../utils/ResJson';
-import Search from "./Search";
+var MercatorProjection = require('../../../utils/MercatorProjection.js');
+var ResJson = require('../../../utils/ResJson.js');
+var Search = require('./Search.js');
+
+// import MercatorProjection from '../../../utils/MercatorProjection.js';
+// import ResJson from '../../../utils/ResJson';
+// import Search from "./Search";
+
 var logger = require('../../../../log4js').logger;
 
 class LinkSearch extends Search{
@@ -56,4 +61,5 @@ class LinkSearch extends Search{
     }
 }
 
-export default LinkSearch;
+// export default LinkSearch;
+module.exports = LinkSearch;

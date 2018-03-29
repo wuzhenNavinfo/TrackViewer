@@ -1,5 +1,8 @@
-import NodeSearch from './NodeSearch.js';
-import LinkSearch from './LinkSearch.js';
+var NodeSearch = require('./NodeSearch.js');
+var LinkSearch = require('./LinkSearch.js');
+
+// import NodeSearch from './NodeSearch.js';
+// import LinkSearch from './LinkSearch.js';
 
 class SearchFactory {
     constructor() {
@@ -20,4 +23,5 @@ class SearchFactory {
     }
 }
 
-export default SearchFactory;
+// export default SearchFactory;
+module.exports = SearchFactory;

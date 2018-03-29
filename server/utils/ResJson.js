@@ -4,7 +4,7 @@
  * @date      2018/03/08
  * @copyright @Navinfo, all rights reserved.
  */
-export default class ResJson {
+class ResJson {
     /**
      * 构造方法.
      * @returns {undefined}
@@ -15,3 +15,6 @@ export default class ResJson {
         this.data = data;
     }
 }
+
+// export default ResJson;
+module.exports = ResJson;

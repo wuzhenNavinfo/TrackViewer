@@ -1,5 +1,8 @@
-import search from './search';
-import business from './business';
+var search = require('./search.js');
+var business = require('./business.js')
+
+// import search from './search';
+// import business from './business';
 
 /**
  * 顶层路由控制器
@@ -25,4 +28,5 @@ const routerDispatcher = function (app) {
     app.use('/trackView/business', business);
 };
 
-export default routerDispatcher;
+// export default routerDispatcher;
+module.exports = routerDispatcher;

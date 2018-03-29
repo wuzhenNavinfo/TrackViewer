@@ -1,6 +1,10 @@
-import MercatorProjection from '../../../utils/MercatorProjection.js';
-import ResJson from '../../../utils/ResJson';
-import Search from "./Search";
+var MercatorProjection = require('../../../utils/MercatorProjection.js');
+var ResJson = require('../../../utils/ResJson.js');
+var Search = require('./Search.js');
+
+// import MercatorProjection from '../../../utils/MercatorProjection.js';
+// import ResJson from '../../../utils/ResJson';
+// import Search from "./Search";
 
 class SearchNode extends Search{
     constructor(dirIndex, type) {
@@ -62,4 +66,6 @@ class SearchNode extends Search{
     }
 }
 
-export default SearchNode;
+//export default SearchNode;
+
+module.exports = SearchNode;
