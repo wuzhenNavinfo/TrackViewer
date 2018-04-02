@@ -9,13 +9,6 @@ var Search = require('./Search.js');
 class SearchNode extends Search{
     constructor(dirIndex, type) {
         super(dirIndex, type);
-        // this.db = null;
-        // if (!this.db) {
-        //     this.db = new NewSqlite(dirIndex).newConnect();
-        // }
-        // this.closeDb = function() {
-        //     this.db.close();
-        // }
 
     }
     getByTileByMode(x, y, z, mode) {

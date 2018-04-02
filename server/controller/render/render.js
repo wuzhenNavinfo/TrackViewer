@@ -1,5 +1,7 @@
 var ResJson = require('../../utils/ResJson.js');
 var SearchFactory = require('./search/SearchFactory.js');
+var FilePathResolve = require('../../utils/FilePathResolve.js');
+var NewSqlite = require('../../sqliteConnect.js');
 
 // import ResJson from '../../utils/ResJson';
 // import SearchFactory from './search/SearchFactory'
@@ -54,7 +56,9 @@ class SearchNode {
         if (!search) {
             return Promise.reject("没有找到对应的查询解析器!");
         }
-        return search.getByTileByMode(x, y, z, mode)
+        return search.getByTileByMode(x, y, z, mode).catch(err => {
+            logger.error(err);
+        })
     }
 }
 

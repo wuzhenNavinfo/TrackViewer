@@ -15,10 +15,9 @@ class Business {
         this.res = res;
         let parm = JSON.parse(req.query.parameter);
         this.dirIndex = parm.dirIndex;
-        this.db = new NewSqlite(this.dirIndex).newConnect();
-        this.closeDb = function() {
-            this.db.close();
-        }
+        const fileObjs = FilePathResolve.getInstance().getSourceArr();
+        const fileObj = fileObjs[this.dirIndex];
+        this.db = NewSqlite.getConnect(fileObj.sqlPath);
     }
 
     /**
@@ -72,7 +71,6 @@ class Business {
                 }
 
             });
-            self.closeDb();
 
         } catch (er){
             logger.error(e);
