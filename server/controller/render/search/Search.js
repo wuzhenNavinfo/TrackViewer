@@ -1,4 +1,5 @@
 var NewSqlite = require('../../../sqliteConnect.js');
+var FilePathResolve = require('../../../utils/FilePathResolve.js');
 // import NewSqlite from '../../../sqliteConnect.js';
 
 var logger = require('../../../../log4js').logger;
@@ -6,13 +7,12 @@ var logger = require('../../../../log4js').logger;
 class Search {
     constructor (dirIndex, type) {
         this.type = type;
-        if (!this.db) {
-            this.db = new NewSqlite(dirIndex).newConnect();
-        }
+        let sqlPath = FilePathResolve.getInstance().getSourceArr()[dirIndex].sqlPath;
+        this.connection = NewSqlite.getConnect(sqlPath);
     }
 
     /**
-     * 根据参数查询瓦片数据
+     * 根据参数查询瓦片数据,子类需要重写
      * @param x
      * @param y
      * @param z
@@ -25,12 +25,12 @@ class Search {
     executeSql(sql) {
         const self = this;
         return new Promise((resolve, reject) => {
-            this.db.spatialite(function(er) {
+            self.connection.spatialite(function(er) {
                 if (er) {
                     logger.error(er);
                     reject(er);
                 } else {
-                    self.db.all(sql, function(err, rows) {
+                    self.connection.all(sql, function(err, rows) {
                         if (err) {
                             logger.error(err);
                             reject(err);
@@ -40,6 +40,8 @@ class Search {
                     });
                 }
             });
+        }).catch(err => {
+            logger.error(err);
         })
     }
 }

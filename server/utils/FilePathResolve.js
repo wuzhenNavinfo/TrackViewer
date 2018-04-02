@@ -1,5 +1,5 @@
 var conf = require('../../config/config.js');
-var NewSqlite = require('../sqliteConnect.js');
+var NewSqlite = require('../sqliteConnect');
 
 // import conf from '../../config/config'
 // import NewSqlite from '../sqliteConnect';
@@ -24,8 +24,10 @@ class FilePathResolve {
      * @returns {undefined}
      */
     constructor () {
-        this._sourceArr = [];
-        this.fileDisplay(conf.dataRoot);
+        if (!this.instance) {
+            this._sourceArr = [];
+            this.fileDisplay(conf.dataRoot);
+        }
     }
 
     /**
@@ -69,6 +71,7 @@ class FilePathResolve {
         });
         this.createTempTables();
         // this.queryLink();
+        // this.task();
     }
 
     queryLink () {
@@ -87,90 +90,86 @@ class FilePathResolve {
     }
 
     createTempTables () {
-        let promises = [];
         for (let i = 0; i < this._sourceArr.length; i++) {
             let source = this._sourceArr[i];
             let sqlPath = source.sqlPath;
+            let dirIndex = source.dirIndex;
             let mode = source.mode;
             let tableName = 'track_collection_link_temp';
+            let tablePoint = 'track_collection';
+            let tablePhoto = 'track_collection_photo';
             if (mode === 'photomode') {
                 tableName = 'track_contshoot_link_temp';
+                tablePoint = 'track_contshoot';
+                tablePhoto = 'track_contshoot_photo';
             }
 
-            promises.push(this.createTable(sqlPath));
+            this.createTable(dirIndex, tableName, tablePoint, tablePhoto)
         }
-        Promise.all(promises).then(data => {
-
-        });
-
     }
 
-    createTable(sqlPath) {
-        sqlPath = path.join('./', sqlPath);
-        return new Promise((resolve, reject) => {
-            let db = NewSqlite.getConnect(sqlPath);
-            db.spatialite(function(err) {
+    createTable(dirIndex, tableName, tablePoint, tablePhoto) {
+        let sqlPath = this._sourceArr[dirIndex].sqlPath;
+        let db = NewSqlite.getConnect(sqlPath);
+        db.spatialite(function(err) {
+            if (err) {
+                logger.error(err);
+                return;
+            }
+            let sql = `drop table if exists '${tableName}'`;
+            db.all(sql ,function (err, rows) {
                 if (err) {
-                    reject(err);
+                    logger.error(err);
                     return;
                 }
-                let sql = `drop table if exists '${tableName}'`;
+                sql = `create table '${tableName}' (
+                    'id' integer  PRIMARY key autoincrement,
+                    'sNodePid' text not null,
+                    'eNodePid' text not null,
+                    'geometry' GEOMETRY )`;
                 db.all(sql ,function (err, rows) {
                     if (err) {
-                        reject(err);
+                        logger.error(err);
                         return;
                     }
-                    sql = `create table '${tableName}' (
-                        'id' integer  PRIMARY key autoincrement,
-                        'sNodePid' text not null,
-                        'eNodePid' text not null,
-                        'geometry' GEOMETRY )`;
-                    db.all(sql ,function (err, rows) {
+                    sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime 
+                            from '${tablePoint}' a , '${tablePhoto}' b where a.id = b.id order by a.recordTime `;
+                    db.all(sql, function(err, rows) {
                         if (err) {
-                            reject(err);
+                            logger.error(err);
                             return;
                         }
-                        sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime
-                                from track_collection a , track_collection_photo b where a.id = b.id order by a.recordTime `;
-                        db.all(sql, function(err, rows) {
+                        if (rows.length < 1) {
+                            return;
+                        }
+                        let sqlStr = `insert into '${tableName}' ('sNodePid', 'eNodePid', 'geometry') values `;
+                        for (let i = 0; i < rows.length - 1; i++) {
+                            let sId = rows[i].id;
+                            let eId = rows[i + 1].id;
+                            let sDate = rows[i].recordTime.substr(0, 8);
+                            let eDate = rows[i + 1].recordTime.substr(0, 8);
+                            let sCoordinates = JSON.parse(rows[i].geometry).coordinates;
+                            let eCoordinates = JSON.parse(rows[i + 1].geometry).coordinates;
+                            let geo = {
+                                type: 'LineString',
+                                coordinates: [sCoordinates, eCoordinates]
+                            };
+                            if (sDate === eDate) {
+                                geo = JSON.stringify(geo);
+                                sqlStr += ` ('${sId}', '${eId}', GeomFromGeoJSON('${geo}') ), `;
+                            }
+                        }
+                        sqlStr = sqlStr.substring(0, sqlStr.lastIndexOf(','));
+                        db.all(sqlStr, function(err, rows) {
                             if (err) {
-                                reject(err);
-                                return;
+                                logger.error(err);
+                            } else {
+                                logger.info("临时道路线表 " + tableName + " 生成成功!");
                             }
-                            if (rows.length < 1) {
-                                resolve(0);
-                                return;
-                            }
-                            let sqlStr = `insert into '${tableName}' ('sNodePid', 'eNodePid', 'geometry') values `;
-                            for (let i = 0; i < rows.length - 1; i++) {
-                                let sId = rows[i].id;
-                                let eId = rows[i + 1].id;
-                                let sDate = rows[i].recordTime.substr(0, 8);
-                                let eDate = rows[i + 1].recordTime.substr(0, 8);
-                                let sCoordinates = JSON.parse(rows[i].geometry).coordinates;
-                                let eCoordinates = JSON.parse(rows[i + 1].geometry).coordinates;
-                                let geo = {
-                                    type: 'LineString',
-                                    coordinates: [sCoordinates, eCoordinates]
-                                };
-                                if (sDate === eDate) {
-                                    geo = JSON.stringify(geo);
-                                    sqlStr += ` ('${sId}', '${eId}', GeomFromGeoJSON('${geo}') ), `;
-                                }
-                            }
-                            sqlStr = sqlStr.substring(0, sqlStr.lastIndexOf(','));
-                            db.all(sqlStr, function(err, rows) {
-                                if (err) {
-                                    reject(err);
-                                } else {
-                                    resolve(0);
-                                    logger.error("临时道路线表生成成功!");
-                                }
-                            });
                         });
                     });
                 });
-            })
+            });
         })
     }
 

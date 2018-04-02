@@ -17,15 +17,12 @@ class LinkSearch extends Search{
         let self = this;
         let  resJson = new ResJson();
         let trackTable = '';
-        let photoTable = '';
         const wkt = MercatorProjection.getWktWithGap(x, y, z, 0);
 
         if (mode === 'videomode') {
-            trackTable = 'track_collection';
-            photoTable = 'track_collection_photo';
+            trackTable = 'track_collection_link_temp';
         } else if (mode === 'photomode') {
-            trackTable = 'track_contshoot';
-            photoTable = 'track_contshoot_photo';
+            trackTable = 'track_contshoot_link_temp';
         } else {
             resJson.errmsg = 'mode参数有误！';
             resJson.errcode = -1;
@@ -33,14 +30,14 @@ class LinkSearch extends Search{
             // -------此处需要改善
         }
 
-        let sql = `select a.id, a.sNodePid, a.eNodePid, AsWKT(a.geometry) AS geometry from link_temp a 
-                where Intersects(GeomFromText('${wkt}'), a.geometry) `;
+        let sql = `select a.id, a.sNodePid, a.eNodePid, AsWKT(a.geometry) AS geometry from '${trackTable}' a 
+                where Intersects(a.geometry, GeomFromText('${wkt}')) `;
         const px = MercatorProjection.tileXToPixelX(x);
         const py = MercatorProjection.tileYToPixelY(y);
 
         return this.executeSql(sql).then(rows => {
             let dataArray = [];
-            for(let i = 0; i < rows.length; i++){
+            for(let i = 0; i < rows.length; i++) {
                 if (rows[i].geometry) {
                     let snapShot = {
                         g: MercatorProjection.coord2Pixel(rows[i].geometry, px, py, z),

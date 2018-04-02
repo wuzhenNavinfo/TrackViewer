@@ -82,8 +82,7 @@ router.get('/getPhotosByIndex', function(req, res, next) {
  */
 router.get('/list', function(req, res, next) {
     try {
-        const filePathResolve = new FilePathResolve();
-        const sourceArr = filePathResolve.getSourceArr();
+        const sourceArr = FilePathResolve.getInstance().getSourceArr();
         const list = [];
         sourceArr.forEach(function (item, index, items) {
             item['type'] = '照片';

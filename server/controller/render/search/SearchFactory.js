@@ -6,7 +6,6 @@ var LinkSearch = require('./LinkSearch.js');
 
 class SearchFactory {
     constructor() {
-
     }
 
     createSearch(dirIndex, type) {
