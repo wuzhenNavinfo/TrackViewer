@@ -5,7 +5,7 @@ const conf = Object.freeze({
     // 图片上传服务接口
     uploadUrl: 'http://fs-road.navinfo.com/dev/trunk/service/dropbox/upload/resource',
     // 数据文件根目录
-    dataRoot: 'E:/github/fastmap/TrackViewer/data',
+    dataRoot: './data',
 });
 
 // export default conf;
