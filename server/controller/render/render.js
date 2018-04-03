@@ -2,11 +2,14 @@ var ResJson = require('../../utils/ResJson.js');
 var SearchFactory = require('./search/SearchFactory.js');
 var FilePathResolve = require('../../utils/FilePathResolve.js');
 var NewSqlite = require('../../sqliteConnect.js');
+var dateFormat = require('dateformat');
 
 // import ResJson from '../../utils/ResJson';
 // import SearchFactory from './search/SearchFactory'
 
 var logger = require('../../../log4js').logger;
+
+var indes = 0;
 
 class SearchNode {
     constructor(req, res, next) {
@@ -16,11 +19,15 @@ class SearchNode {
     }
 
     getObjByTile() {
+        indes ++;
+        var indexs = indes;
+        // logger.error(indexs + '进入：' + dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss l'));
         const self = this;
         const param = JSON.parse(this.req.query.parameter);
         let json = new ResJson();
         const promises = this._createPromises(param);
         Promise.all(promises).then(res => {
+            // logger.error(indexs + '退出：' + dateFormat(new Date(), 'yyyy-mm-dd hh:MM:ss  l'));
             for (let i = 0; i < res.length; i++) {
                 json.data[res[i].type] = res[i].data;
             }

@@ -24,10 +24,7 @@ class FilePathResolve {
      * @returns {undefined}
      */
     constructor () {
-        if (!this.instance) {
-            this._sourceArr = [];
-            this.fileDisplay(conf.dataRoot);
-        }
+
     }
 
     /**
@@ -116,56 +113,67 @@ class FilePathResolve {
                 logger.error(err);
                 return;
             }
-            let sql = `drop table if exists '${tableName}'`;
-            db.all(sql ,function (err, rows) {
+            let sql = `SELECT COUNT(*) flag  FROM sqlite_master where type='table' and name='${tableName}'`;
+            db.all(sql, function (err, rows) {
                 if (err) {
                     logger.error(err);
                     return;
                 }
-                sql = `create table '${tableName}' (
-                    'id' integer  PRIMARY key autoincrement,
-                    'sNodePid' text not null,
-                    'eNodePid' text not null,
-                    'geometry' GEOMETRY )`;
+                if (rows[0].flag > 0) {
+                    logger.info(`表${tableName}已经存在，不需要重复创建`);
+                    return;
+                }
+                sql = `drop table if exists '${tableName}'`;
                 db.all(sql ,function (err, rows) {
                     if (err) {
                         logger.error(err);
                         return;
                     }
-                    sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime 
-                            from '${tablePoint}' a , '${tablePhoto}' b where a.id = b.id order by a.recordTime `;
-                    db.all(sql, function(err, rows) {
+                    sql = `create table '${tableName}' (
+                    'id' integer  PRIMARY key autoincrement,
+                    'sNodePid' text not null,
+                    'eNodePid' text not null,
+                    'geometry' GEOMETRY )`;
+                    db.all(sql ,function (err, rows) {
                         if (err) {
                             logger.error(err);
                             return;
                         }
-                        if (rows.length < 1) {
-                            return;
-                        }
-                        let sqlStr = `insert into '${tableName}' ('sNodePid', 'eNodePid', 'geometry') values `;
-                        for (let i = 0; i < rows.length - 1; i++) {
-                            let sId = rows[i].id;
-                            let eId = rows[i + 1].id;
-                            let sDate = rows[i].recordTime.substr(0, 8);
-                            let eDate = rows[i + 1].recordTime.substr(0, 8);
-                            let sCoordinates = JSON.parse(rows[i].geometry).coordinates;
-                            let eCoordinates = JSON.parse(rows[i + 1].geometry).coordinates;
-                            let geo = {
-                                type: 'LineString',
-                                coordinates: [sCoordinates, eCoordinates]
-                            };
-                            if (sDate === eDate) {
-                                geo = JSON.stringify(geo);
-                                sqlStr += ` ('${sId}', '${eId}', GeomFromGeoJSON('${geo}') ), `;
-                            }
-                        }
-                        sqlStr = sqlStr.substring(0, sqlStr.lastIndexOf(','));
-                        db.all(sqlStr, function(err, rows) {
+                        sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime 
+                            from '${tablePoint}' a , '${tablePhoto}' b where a.id = b.id order by a.recordTime `;
+                        db.all(sql, function(err, rows) {
                             if (err) {
                                 logger.error(err);
-                            } else {
-                                logger.info("临时道路线表 " + tableName + " 生成成功!");
+                                return;
                             }
+                            if (rows.length < 1) {
+                                return;
+                            }
+                            let sqlStr = `insert into '${tableName}' ('sNodePid', 'eNodePid', 'geometry') values `;
+                            for (let i = 0; i < rows.length - 1; i++) {
+                                let sId = rows[i].id;
+                                let eId = rows[i + 1].id;
+                                let sDate = rows[i].recordTime.substr(0, 8);
+                                let eDate = rows[i + 1].recordTime.substr(0, 8);
+                                let sCoordinates = JSON.parse(rows[i].geometry).coordinates;
+                                let eCoordinates = JSON.parse(rows[i + 1].geometry).coordinates;
+                                let geo = {
+                                    type: 'LineString',
+                                    coordinates: [sCoordinates, eCoordinates]
+                                };
+                                if (sDate === eDate) {
+                                    geo = JSON.stringify(geo);
+                                    sqlStr += ` ('${sId}', '${eId}', GeomFromGeoJSON('${geo}') ), `;
+                                }
+                            }
+                            sqlStr = sqlStr.substring(0, sqlStr.lastIndexOf(','));
+                            db.all(sqlStr, function(err, rows) {
+                                if (err) {
+                                    logger.error(err);
+                                } else {
+                                    logger.info("临时道路线表 " + tableName + " 生成成功!");
+                                }
+                            });
                         });
                     });
                 });
@@ -184,6 +192,9 @@ class FilePathResolve {
     static getInstance() {
         if (!this.instance) {
             this.instance = new FilePathResolve();
+            this.instance._sourceArr = [];
+            this.instance.fileDisplay(conf.dataRoot);
+
         }
         return this.instance;
     }

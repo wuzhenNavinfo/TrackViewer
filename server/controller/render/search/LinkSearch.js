@@ -2,10 +2,6 @@ var MercatorProjection = require('../../../utils/MercatorProjection.js');
 var ResJson = require('../../../utils/ResJson.js');
 var Search = require('./Search.js');
 
-// import MercatorProjection from '../../../utils/MercatorProjection.js';
-// import ResJson from '../../../utils/ResJson';
-// import Search from "./Search";
-
 var logger = require('../../../../log4js').logger;
 
 class LinkSearch extends Search{
