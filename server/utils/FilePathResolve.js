@@ -34,6 +34,59 @@ class FilePathResolve {
      */
     fileDisplay (filePath) {
         var self = this;
+        var folders = ['center', 'left', 'right'];
+        var dirIndex = 0;
+        folders.forEach(function (folder, index) {
+            let baseDir = path.join(filePath, folder); // data/center
+            if (fs.existsSync(baseDir)){
+                let videoMode = path.join(baseDir, 'videomode');
+                let photoMode = path.join(baseDir, 'photomode');
+                console.info('a' + dirIndex);
+                dirIndex = self.generFileObj(videoMode, dirIndex, folder, baseDir);
+                console.info('b' + dirIndex);
+                dirIndex = self.generFileObj(photoMode, dirIndex, folder, baseDir);
+                console.info('c' + dirIndex);
+            }
+        });
+        console.info(self._sourceArr);
+        this.createTempTables();
+        // this.queryLink();
+        // this.task();
+    }
+
+    generFileObj (modeDir, index, flag, baseDir) {
+        let self = this;
+        if (fs.existsSync(modeDir)) {
+            let fileList = fs.readdirSync(modeDir);
+            fileList.forEach(function (item) {
+                var dateDir = path.join(modeDir, item);
+                var sqlPath = path.join(dateDir, 'playback.sqlite');
+                if (!fs.existsSync(sqlPath)) {
+                    return;
+                }
+                var temp = {
+                    baseDir: baseDir,
+                    filePath: dateDir,
+                    sqlPath: sqlPath,
+                    createTime: item,
+                    flag: flag,
+                    dirIndex: index++,
+                    mode: 'videomode'
+                };
+                self._sourceArr.push(temp);
+            });
+        }
+        console.info('index=' + index);
+        return index;
+    }
+
+    /**
+     * 查询filePath下的目录结构
+     * @param {String} string 路径
+     * @returns {Array} 返回数组对象，目录搜索到sqlite文件这一级，如果存在photomode目录则添加到返回值中，如果存在videomode目录则添加到返回值中.
+     */
+    fileDisplayBack (filePath) {
+        var self = this;
         var folder = ['center', 'left', 'right'];
         var dirIndex = 0;
         folder.forEach(function (item, index) {
@@ -81,7 +134,7 @@ class FilePathResolve {
                 return;
             }
             db.all(sql, function(err, rows) {
-                logger.info(err,rows)
+                logger.info(err,rows);
             });
         });
     }
@@ -89,7 +142,7 @@ class FilePathResolve {
     createTempTables () {
         for (let i = 0; i < this._sourceArr.length; i++) {
             let source = this._sourceArr[i];
-            let sqlPath = source.sqlPath;
+            // let sqlPath = source.sqlPath;
             let dirIndex = source.dirIndex;
             let mode = source.mode;
             let tableName = 'track_collection_link_temp';
@@ -101,7 +154,7 @@ class FilePathResolve {
                 tablePhoto = 'track_contshoot_photo';
             }
 
-            this.createTable(dirIndex, tableName, tablePoint, tablePhoto)
+            this.createTable(dirIndex, tableName, tablePoint, tablePhoto);
         }
     }
 
@@ -171,14 +224,14 @@ class FilePathResolve {
                                 if (err) {
                                     logger.error(err);
                                 } else {
-                                    logger.info("临时道路线表 " + tableName + " 生成成功!");
+                                    logger.info('临时道路线表' + tableName + ' 生成成功!');
                                 }
                             });
                         });
                     });
                 });
             });
-        })
+        });
     }
 
     /**
@@ -190,7 +243,9 @@ class FilePathResolve {
     }
 
     static getInstance() {
+        console.info('getInstance111');
         if (!this.instance) {
+            console.info('getInstance3333333333');
             this.instance = new FilePathResolve();
             this.instance._sourceArr = [];
             this.instance.fileDisplay(conf.dataRoot);
