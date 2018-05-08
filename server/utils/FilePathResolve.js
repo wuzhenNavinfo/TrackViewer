@@ -1,14 +1,14 @@
-var conf = require('../../config/config.js');
-var NewSqlite = require('../sqliteConnect');
+let conf = require('../../config/config.js');
+let NewSqlite = require('../sqliteConnect');
 
 // import conf from '../../config/config'
 // import NewSqlite from '../sqliteConnect';
 
-var lodash = require('lodash');
-var logger = require('../../log4js').logger;
-var dateFormat = require('dateformat');
-var fs = require('fs');
-var path = require('path');
+let lodash = require('lodash');
+let logger = require('../../log4js').logger;
+let dateFormat = require('dateformat');
+let fs = require('fs');
+let path = require('path');
 
 
 /**
@@ -38,24 +38,21 @@ class FilePathResolve {
         var dirIndex = 0;
         folders.forEach(function (folder, index) {
             let baseDir = path.join(filePath, folder); // data/center
-            if (fs.existsSync(baseDir)){
+            if (fs.existsSync(baseDir)) {
                 let videoMode = path.join(baseDir, 'videomode');
                 let photoMode = path.join(baseDir, 'photomode');
-                console.info('a' + dirIndex);
                 dirIndex = self.generFileObj(videoMode, dirIndex, folder, baseDir);
-                console.info('b' + dirIndex);
                 dirIndex = self.generFileObj(photoMode, dirIndex, folder, baseDir);
-                console.info('c' + dirIndex);
             }
         });
-        console.info(self._sourceArr);
         this.createTempTables();
         // this.queryLink();
         // this.task();
     }
 
-    generFileObj (modeDir, index, flag, baseDir) {
+    generFileObj (modeDir, ind, flag, baseDir) {
         let self = this;
+        let index = ind;
         if (fs.existsSync(modeDir)) {
             let fileList = fs.readdirSync(modeDir);
             fileList.forEach(function (item) {
@@ -76,7 +73,6 @@ class FilePathResolve {
                 self._sourceArr.push(temp);
             });
         }
-        console.info('index=' + index);
         return index;
     }
 
@@ -90,8 +86,8 @@ class FilePathResolve {
         var folder = ['center', 'left', 'right'];
         var dirIndex = 0;
         folder.forEach(function (item, index) {
-            let baseDir = path.join(filePath,item); // data/center
-            if (fs.existsSync(baseDir)){
+            let baseDir = path.join(filePath, item); // data/center
+            if (fs.existsSync(baseDir)) {
                 let sqlPath = path.join(baseDir, 'playback.sqlite');
                 if (fs.existsSync(sqlPath)) {
                     let fileStat = fs.statSync(baseDir);
@@ -124,22 +120,22 @@ class FilePathResolve {
         // this.task();
     }
 
-    queryLink () {
+    queryLink() {
         let sqlPath = this._sourceArr[1].sqlPath;
         sqlPath = path.join('./', sqlPath);
         let db = NewSqlite.getConnect(sqlPath);
-        let sql = `select a.sNodePid, AsGeoJSON(a.geometry) AS geometry from link_temp a`;
+        let sql = 'select a.sNodePid, AsGeoJSON(a.geometry) AS geometry from link_temp a';
         db.spatialite(function(err) {
             if (err) {
                 return;
             }
-            db.all(sql, function(err, rows) {
-                logger.info(err,rows);
+            db.all(sql, function(er, rows) {
+                logger.info(er, rows);
             });
         });
     }
 
-    createTempTables () {
+    createTempTables() {
         for (let i = 0; i < this._sourceArr.length; i++) {
             let source = this._sourceArr[i];
             // let sqlPath = source.sqlPath;
@@ -161,25 +157,25 @@ class FilePathResolve {
     createTable(dirIndex, tableName, tablePoint, tablePhoto) {
         let sqlPath = this._sourceArr[dirIndex].sqlPath;
         let db = NewSqlite.getConnect(sqlPath);
-        db.spatialite(function(err) {
-            if (err) {
-                logger.error(err);
+        db.spatialite(function(e1) {
+            if (e1) {
+                logger.error(e1);
                 return;
             }
             let sql = `SELECT COUNT(*) flag  FROM sqlite_master where type='table' and name='${tableName}'`;
-            db.all(sql, function (err, rows) {
-                if (err) {
-                    logger.error(err);
+            db.all(sql, function (e2, r1) {
+                if (e2) {
+                    logger.error(e2);
                     return;
                 }
-                if (rows[0].flag > 0) {
+                if (r1[0].flag > 0) {
                     logger.info(`表${tableName}已经存在，不需要重复创建`);
                     return;
                 }
                 sql = `drop table if exists '${tableName}'`;
-                db.all(sql ,function (err, rows) {
-                    if (err) {
-                        logger.error(err);
+                db.all(sql, function (e3, r3) {
+                    if (e3) {
+                        logger.error(e3);
                         return;
                     }
                     sql = `create table '${tableName}' (
@@ -187,9 +183,9 @@ class FilePathResolve {
                     'sNodePid' text not null,
                     'eNodePid' text not null,
                     'geometry' GEOMETRY )`;
-                    db.all(sql ,function (err, rows) {
-                        if (err) {
-                            logger.error(err);
+                    db.all(sql, function (e4, r4) {
+                        if (e4) {
+                            logger.error(e4);
                             return;
                         }
                         sql = `select a.id, AsGeoJSON(a.geometry) AS geometry, a.recordTime 
@@ -220,9 +216,9 @@ class FilePathResolve {
                                 }
                             }
                             sqlStr = sqlStr.substring(0, sqlStr.lastIndexOf(','));
-                            db.all(sqlStr, function(err, rows) {
-                                if (err) {
-                                    logger.error(err);
+                            db.all(sqlStr, function(er, r) {
+                                if (er) {
+                                    logger.error(er);
                                 } else {
                                     logger.info('临时道路线表' + tableName + ' 生成成功!');
                                 }
@@ -243,9 +239,7 @@ class FilePathResolve {
     }
 
     static getInstance() {
-        console.info('getInstance111');
         if (!this.instance) {
-            console.info('getInstance3333333333');
             this.instance = new FilePathResolve();
             this.instance._sourceArr = [];
             this.instance.fileDisplay(conf.dataRoot);

@@ -18,6 +18,6 @@ class NewSqlite {
             }
         }
         return this.connections[sqlPath];
-    };
+    }
 }
 module.exports = NewSqlite;
