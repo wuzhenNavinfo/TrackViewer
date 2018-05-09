@@ -4,21 +4,17 @@
  * @date      2018/03/08
  * @copyright @Navinfo, all rights reserved.
  */
-export default class ResJson {
-
-    errcode = 0;
-
-    errmsg = '';
-
-    data = null;
-
+class ResJson {
     /**
      * 构造方法.
      * @returns {undefined}
      */
-    constructor (errcode = 0, errmsg = '', data = null) {
+    constructor (errcode = 0, errmsg = '', data = {}) {
         this.errcode = errcode;
         this.errmsg = errmsg;
         this.data = data;
     }
 }
+
+// export default ResJson;
+module.exports = ResJson;

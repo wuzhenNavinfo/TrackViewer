@@ -8,4 +8,5 @@ const conf = Object.freeze({
     dataRoot: './data',
 });
 
-export default conf;
+// export default conf;
+module.exports = conf;

@@ -1,14 +1,44 @@
-import FilePathResolve from '../server/utils/FilePathResolve';
-import ResJson from '../server/utils/ResJson';
-import Business from '../server/controller/Business';
-import express from 'express';
-import needle from 'needle';
-import conf from '../config/config';
-
+var FilePathResolve = require('../server/utils/FilePathResolve.js');
+var ResJson = require('../server/utils/ResJson.js');
+var Business = require('../server/controller/business/Business.js');
+var express = require('express');
+var needle = require('needle');
+var conf = require('../config/config.js');
 var path = require('path');
 var fs = require('fs');
 var logger = require('../log4js').logger;
+
 var router = express.Router();
+
+
+// import FilePathResolve from '../server/utils/FilePathResolve';
+// import ResJson from '../server/utils/ResJson';
+// import Business from '../server/controller/business/Business';
+// import express from 'express';
+// import needle from 'needle';
+// import conf from '../config/config';
+
+/**
+ * 获取点信息
+ */
+router.get('/queryNodeDetail', function (req, res, next) {
+    try {
+        let param = req.query.parameter;
+        const {
+            dirIndex,
+            id
+        } = JSON.parse(param);
+        let fileObjs = FilePathResolve.getInstance().getSourceArr();
+        let fileObj = fileObjs[dirIndex];
+        let business = new Business(req, res);
+        let mode = fileObj.mode;
+        business.getNodeDeatil(id, mode);
+
+    } catch (error) {
+        logger.error('接口' + req.originalUrl + '请求失败!', error);
+        next(error);
+    }
+});
 
 /**
  * 根据照片的文件名获取照片
@@ -36,6 +66,7 @@ router.get('/queryImage', function(req, res, next) {
  */
 router.get('/getPhotosByIndex', function(req, res, next) {
     try {
+        logger.info('咋没日志呢！');
         let business = new Business(req, res);
         let parm = JSON.parse(req.query.parameter);
         let mode = parm.mode;
@@ -51,13 +82,12 @@ router.get('/getPhotosByIndex', function(req, res, next) {
  */
 router.get('/list', function(req, res, next) {
     try {
-        const filePathResolve = new FilePathResolve();
-        const sourceArr = filePathResolve.getSourceArr();
+        const sourceArr = FilePathResolve.getInstance().getSourceArr();
         const list = [];
         sourceArr.forEach(function (item, index, items) {
             item['type'] = '照片';
             list.push(item);
-        })
+        });
 
         const resJson = new ResJson();
         resJson.data = list;
@@ -83,7 +113,7 @@ router.post('/uploadImage', function (req, res, next) {
         
         const fileObjs = FilePathResolve.getInstance().getSourceArr();
         const fileObj = fileObjs[dirIndex];
-        const imagePath = path.join(fileObj.baseDir, image);     
+        const imagePath = path.join(fileObj.baseDir, image);
 
         const data = {
             parameter: JSON.stringify({
@@ -92,7 +122,7 @@ router.post('/uploadImage', function (req, res, next) {
                 pid: objectPid
             }),
             image: { file: imagePath, content_type: 'image/jpg' }
-        }
+        };
 
         needle.post(conf.uploadUrl + '?access_token=' + accessToken, data, { multipart: true }, function (err, resp, body) {
             res.json(resp.body);
@@ -103,4 +133,5 @@ router.post('/uploadImage', function (req, res, next) {
     }
 });
 
-export default router;
+// export default router;
+module.exports = router;

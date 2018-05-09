@@ -1,21 +1,21 @@
-import Node from '../server/controller/node.js';
-import express from 'express';
+var Render = require('../server/controller/render/render.js');
+var express = require('express');
+
+// import Render from '../server/controller/render/render';
+// import express from 'express';
 var logger = require('../log4js').logger;
+
 var router = express.Router();
 
-router.get('/node', function(req, res, next) {
+
+router.get('/getObjByTile', function (req, res, next) {
     try {
-        let test = new Node(req, res, next);
-        let parm = JSON.parse(req.query.parameter);
-        let x = parm.x;
-        let y = parm.y;
-        let z = parm.z;
-        let mode = parm.mode;
-        test.searchByTile(x, y, z, mode);
+        let renderManager = new Render(req, res, next);
+        renderManager['getObjByTile']();
     } catch (error) {
-        logger.info(error);
+        logger.error(error);
         next(error);
     }
 });
 
-export default router;
+module.exports = router;
