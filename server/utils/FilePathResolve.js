@@ -41,8 +41,8 @@ class FilePathResolve {
             if (fs.existsSync(baseDir)) {
                 let videoMode = path.join(baseDir, 'videomode');
                 let photoMode = path.join(baseDir, 'photomode');
-                dirIndex = self.generFileObj(videoMode, dirIndex, folder, baseDir);
-                dirIndex = self.generFileObj(photoMode, dirIndex, folder, baseDir);
+                dirIndex = self.generFileObj(videoMode, dirIndex, folder, baseDir, 'videomode');
+                dirIndex = self.generFileObj(photoMode, dirIndex, folder, baseDir, 'photomode');
             }
         });
         this.createTempTables();
@@ -50,7 +50,7 @@ class FilePathResolve {
         // this.task();
     }
 
-    generFileObj (modeDir, ind, flag, baseDir) {
+    generFileObj (modeDir, ind, flag, baseDir, mode) {
         let self = this;
         let index = ind;
         if (fs.existsSync(modeDir)) {
@@ -68,56 +68,12 @@ class FilePathResolve {
                     createTime: item,
                     flag: flag,
                     dirIndex: index++,
-                    mode: 'videomode'
+                    mode: mode
                 };
                 self._sourceArr.push(temp);
             });
         }
         return index;
-    }
-
-    /**
-     * 查询filePath下的目录结构
-     * @param {String} string 路径
-     * @returns {Array} 返回数组对象，目录搜索到sqlite文件这一级，如果存在photomode目录则添加到返回值中，如果存在videomode目录则添加到返回值中.
-     */
-    fileDisplayBack (filePath) {
-        var self = this;
-        var folder = ['center', 'left', 'right'];
-        var dirIndex = 0;
-        folder.forEach(function (item, index) {
-            let baseDir = path.join(filePath, item); // data/center
-            if (fs.existsSync(baseDir)) {
-                let sqlPath = path.join(baseDir, 'playback.sqlite');
-                if (fs.existsSync(sqlPath)) {
-                    let fileStat = fs.statSync(baseDir);
-                    var temp = {
-                        baseDir: baseDir,
-                        sqlPath: sqlPath,
-                        createTime: dateFormat(fileStat.ctime, 'yyyy-mm-dd'),
-                        flag: item
-                    };
-                    let photomodePath = path.join(baseDir, 'photomode');
-                    if (fs.existsSync(photomodePath)) {
-                        temp.mode = 'photomode';
-                        temp.dirIndex = dirIndex++;
-                        temp.filePath = photomodePath;
-                        self._sourceArr.push(temp);
-                    }
-                    let videomodePath = path.join(baseDir, 'videomode');
-                    if (fs.existsSync(videomodePath)) {
-                        temp = lodash.clone(temp);
-                        temp.mode = 'videomode';
-                        temp.dirIndex = dirIndex++;
-                        temp.filePath = videomodePath;
-                        self._sourceArr.push(temp);
-                    }
-                }
-            }
-        });
-        this.createTempTables();
-        // this.queryLink();
-        // this.task();
     }
 
     queryLink() {
